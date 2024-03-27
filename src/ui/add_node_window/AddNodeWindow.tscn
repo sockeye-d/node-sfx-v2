@@ -1,0 +1,115 @@
+[gd_scene load_steps=15 format=3 uid="uid://h2uba1em2toh"]
+
+[ext_resource type="Script" path="res://src/ui/add_node_window/add_node_window.gd" id="1_eo7hh"]
+[ext_resource type="Script" path="res://src/ui/add_node_window/node_item.gd" id="2_44e8e"]
+
+[sub_resource type="Resource" id="Resource_f71j8"]
+script = ExtResource("2_44e8e")
+name = "Time"
+children = Array[ExtResource("2_44e8e")]([])
+
+[sub_resource type="Resource" id="Resource_yelw7"]
+script = ExtResource("2_44e8e")
+name = "Input"
+children = Array[ExtResource("2_44e8e")]([SubResource("Resource_f71j8")])
+
+[sub_resource type="Resource" id="Resource_vo10f"]
+script = ExtResource("2_44e8e")
+name = "Oscillator"
+children = Array[ExtResource("2_44e8e")]([])
+
+[sub_resource type="Resource" id="Resource_uujhu"]
+script = ExtResource("2_44e8e")
+name = "Generator"
+children = Array[ExtResource("2_44e8e")]([SubResource("Resource_vo10f")])
+
+[sub_resource type="Resource" id="Resource_vyfyb"]
+script = ExtResource("2_44e8e")
+name = "Automator"
+children = Array[ExtResource("2_44e8e")]([])
+
+[sub_resource type="Resource" id="Resource_6qdbb"]
+script = ExtResource("2_44e8e")
+name = "Math"
+children = Array[ExtResource("2_44e8e")]([])
+
+[sub_resource type="Resource" id="Resource_i6ii3"]
+script = ExtResource("2_44e8e")
+name = "Modifier"
+children = Array[ExtResource("2_44e8e")]([SubResource("Resource_vyfyb"), SubResource("Resource_6qdbb")])
+
+[sub_resource type="Resource" id="Resource_5uflc"]
+script = ExtResource("2_44e8e")
+name = "Exponential smoother"
+children = Array[ExtResource("2_44e8e")]([])
+
+[sub_resource type="Resource" id="Resource_tee1t"]
+script = ExtResource("2_44e8e")
+name = "Filter"
+children = Array[ExtResource("2_44e8e")]([SubResource("Resource_5uflc")])
+
+[sub_resource type="Resource" id="Resource_tp4do"]
+script = ExtResource("2_44e8e")
+name = "Oscilloscope"
+children = Array[ExtResource("2_44e8e")]([])
+
+[sub_resource type="Resource" id="Resource_7yvyo"]
+script = ExtResource("2_44e8e")
+name = "root"
+children = Array[ExtResource("2_44e8e")]([SubResource("Resource_yelw7"), SubResource("Resource_uujhu"), SubResource("Resource_i6ii3"), SubResource("Resource_tee1t"), SubResource("Resource_tp4do")])
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mr3ur"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+
+[node name="AddNodeWindow" type="Window"]
+title = "Add node..."
+initial_position = 5
+size = Vector2i(300, 500)
+transient = true
+exclusive = true
+popup_window = true
+script = ExtResource("1_eo7hh")
+items = SubResource("Resource_7yvyo")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ItemsTree" type="Tree" parent="PanelContainer/VBoxContainer/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_mr3ur")
+hide_root = true
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = "Add"
+
+[connection signal="close_requested" from="." to="." method="_on_close_requested"]
+[connection signal="item_activated" from="PanelContainer/VBoxContainer/ScrollContainer/ItemsTree" to="." method="_on_items_tree_item_activated"]
+[connection signal="item_selected" from="PanelContainer/VBoxContainer/ScrollContainer/ItemsTree" to="." method="_on_items_tree_item_selected"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/Button" to="." method="_on_button_pressed"]

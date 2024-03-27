@@ -1,0 +1,61 @@
+[gd_scene load_steps=6 format=3 uid="uid://dpkk5woh4logp"]
+
+[ext_resource type="Script" path="res://src/ui/node_graph_ui/graph_edit.gd" id="1_xycfd"]
+[ext_resource type="PackedScene" uid="uid://b2a46kobve2bc" path="res://src/ui/node_graph_ui/nodes/output_node.tscn" id="2_e504x"]
+[ext_resource type="PackedScene" uid="uid://h2uba1em2toh" path="res://src/ui/add_node_window/AddNodeWindow.tscn" id="2_k7ga3"]
+
+[sub_resource type="InputEventAction" id="InputEventAction_w5vlr"]
+action = &"add_node"
+
+[sub_resource type="Shortcut" id="Shortcut_gi8tx"]
+events = [SubResource("InputEventAction_w5vlr")]
+
+[node name="GraphEdit" type="GraphEdit"]
+auto_translate_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+grid_pattern = 1
+minimap_enabled = false
+show_zoom_label = true
+script = ExtResource("1_xycfd")
+
+[node name="OutputNode" parent="." instance=ExtResource("2_e504x")]
+layout_mode = 0
+offset_left = 100.0
+offset_top = 100.0
+offset_right = 300.0
+offset_bottom = 210.0
+mouse_filter = 1
+position_offset = Vector2(100, 100)
+
+[node name="AddNodeWindow" parent="." instance=ExtResource("2_k7ga3")]
+visible = false
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MenuHBoxControls" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="AddNodeButton" type="Button" parent="MenuHBoxControls"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+shortcut = SubResource("Shortcut_gi8tx")
+text = "Add node"
+
+[connection signal="connection_request" from="." to="." method="_on_connection_request"]
+[connection signal="connection_to_empty" from="." to="." method="_on_connection_to_empty"]
+[connection signal="delete_nodes_request" from="." to="." method="_on_delete_nodes_request"]
+[connection signal="disconnection_request" from="." to="." method="_on_disconnection_request"]

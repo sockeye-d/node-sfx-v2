@@ -1,0 +1,7 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://b4ny5toh37sjd"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_moysq"]
+
+[resource]
+GraphNode/constants/separation = 8
+GraphNode/styles/titlebar_selected = SubResource("StyleBoxFlat_moysq")
