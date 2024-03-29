@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://cty1px4el7xoe"]
 
-[ext_resource type="Script" path="res://src/ui/node_graph_ui/nodes/automator_node/automator_node.gd" id="1_5iq3t"]
 [ext_resource type="Script" path="res://src/ui/slider_combo/slider_combo.gd" id="1_h8cks"]
+[ext_resource type="Script" path="res://src/ui/node_graph_ui/nodes/sfx_node.gd" id="1_jt1gu"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_l7w60"]
 
@@ -73,7 +73,8 @@ slot/6/right_type = 0
 slot/6/right_color = Color(1, 1, 1, 1)
 slot/6/right_icon = null
 slot/6/draw_stylebox = true
-script = ExtResource("1_5iq3t")
+script = ExtResource("1_jt1gu")
+type = "Automator"
 
 [node name="OutputOutput" type="Label" parent="."]
 layout_mode = 2
@@ -143,7 +144,7 @@ texture_repeat = 0
 material = null
 use_parent_material = false
 clip_contents = false
-custom_minimum_size = Vector2(0, 55)
+custom_minimum_size = Vector2(0, 52)
 layout_direction = 0
 layout_mode = 2
 size_flags_horizontal = 3
@@ -201,7 +202,7 @@ texture_repeat = 0
 material = null
 use_parent_material = false
 clip_contents = false
-custom_minimum_size = Vector2(0, 55)
+custom_minimum_size = Vector2(0, 52)
 layout_direction = 0
 layout_mode = 2
 size_flags_horizontal = 3
@@ -259,7 +260,7 @@ texture_repeat = 0
 material = null
 use_parent_material = false
 clip_contents = false
-custom_minimum_size = Vector2(0, 39)
+custom_minimum_size = Vector2(0, 36)
 layout_direction = 0
 layout_mode = 2
 size_flags_horizontal = 1
@@ -318,7 +319,7 @@ texture_repeat = 0
 material = null
 use_parent_material = false
 clip_contents = false
-custom_minimum_size = Vector2(0, 39)
+custom_minimum_size = Vector2(0, 52)
 layout_direction = 0
 layout_mode = 2
 size_flags_horizontal = 1
@@ -340,7 +341,7 @@ mouse_default_cursor_shape = 0
 theme = null
 theme_type_variation = &""
 min_value = 0.0
-max_value = 100.0
+max_value = 1.0
 step = 0.001
 page = 0.0
 value = 0.0
@@ -350,7 +351,6 @@ allow_greater = true
 allow_lesser = true
 script = ExtResource("1_h8cks")
 prefix = "From min: "
-slider_visible = false
 
 [node name="FromMaxInput" type="Range" parent="."]
 _import_path = NodePath("")
@@ -377,7 +377,7 @@ texture_repeat = 0
 material = null
 use_parent_material = false
 clip_contents = false
-custom_minimum_size = Vector2(0, 39)
+custom_minimum_size = Vector2(0, 52)
 layout_direction = 0
 layout_mode = 2
 size_flags_horizontal = 1
@@ -399,7 +399,7 @@ mouse_default_cursor_shape = 0
 theme = null
 theme_type_variation = &""
 min_value = 0.0
-max_value = 100.0
+max_value = 1.0
 step = 0.001
 page = 0.0
 value = 0.0
@@ -409,7 +409,6 @@ allow_greater = true
 allow_lesser = true
 script = ExtResource("1_h8cks")
 prefix = "From max: "
-slider_visible = false
 
 [node name="ToMinInput" type="Range" parent="."]
 _import_path = NodePath("")
@@ -436,7 +435,7 @@ texture_repeat = 0
 material = null
 use_parent_material = false
 clip_contents = false
-custom_minimum_size = Vector2(0, 39)
+custom_minimum_size = Vector2(0, 52)
 layout_direction = 0
 layout_mode = 2
 size_flags_horizontal = 1
@@ -458,7 +457,7 @@ mouse_default_cursor_shape = 0
 theme = null
 theme_type_variation = &""
 min_value = 0.0
-max_value = 100.0
+max_value = 1.0
 step = 0.001
 page = 0.0
 value = 0.0
@@ -468,7 +467,6 @@ allow_greater = true
 allow_lesser = true
 script = ExtResource("1_h8cks")
 prefix = "To min: "
-slider_visible = false
 
 [node name="ToMaxInput" type="Range" parent="."]
 _import_path = NodePath("")
@@ -495,7 +493,7 @@ texture_repeat = 0
 material = null
 use_parent_material = false
 clip_contents = false
-custom_minimum_size = Vector2(0, 39)
+custom_minimum_size = Vector2(0, 52)
 layout_direction = 0
 layout_mode = 2
 size_flags_horizontal = 1
@@ -517,7 +515,7 @@ mouse_default_cursor_shape = 0
 theme = null
 theme_type_variation = &""
 min_value = 0.0
-max_value = 100.0
+max_value = 1.0
 step = 0.001
 page = 0.0
 value = 0.0
@@ -527,7 +525,6 @@ allow_greater = true
 allow_lesser = true
 script = ExtResource("1_h8cks")
 prefix = "To max: "
-slider_visible = false
 
 [connection signal="pressed" from="Interface/VBoxContainer/ButtonContainer/AddButton" to="." method="_on_add_button_pressed"]
 [connection signal="pressed" from="Interface/VBoxContainer/ButtonContainer/RemoveButton" to="." method="_on_remove_button_pressed"]

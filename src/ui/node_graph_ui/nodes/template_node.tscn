@@ -1,10 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://pmvciqfjym2g"]
+[gd_scene load_steps=2 format=3 uid="uid://k6m2dpcbp0kq"]
 
-[ext_resource type="Script" path="res://src/ui/node_graph_ui/nodes/sfx_node.gd" id="1_bp644"]
+[ext_resource type="Script" path="res://src/ui/node_graph_ui/nodes/sfx_node.gd" id="1_67f2r"]
 
-[node name="TimeNode" type="GraphNode"]
+[node name="TemplateNode" type="GraphNode"]
 custom_minimum_size = Vector2(200, 0)
-title = "Time"
+title = "Template"
 slot/0/left_enabled = false
 slot/0/left_type = 0
 slot/0/left_color = Color(1, 1, 1, 1)
@@ -14,10 +14,10 @@ slot/0/right_type = 0
 slot/0/right_color = Color(1, 1, 1, 1)
 slot/0/right_icon = null
 slot/0/draw_stylebox = true
-script = ExtResource("1_bp644")
-type = "Time"
+script = ExtResource("1_67f2r")
+type = "Template"
 
-[node name="TimeOutput" type="Label" parent="."]
+[node name="OutputOutput" type="Label" parent="."]
 layout_mode = 2
-text = "Time"
+text = "Output"
 horizontal_alignment = 2

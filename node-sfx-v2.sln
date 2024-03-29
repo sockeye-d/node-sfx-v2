@@ -1,0 +1,19 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "node-sfx-v2", "node-sfx-v2.csproj", "{6022C74F-39A4-4D6C-A264-CABF52008ECB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+	Debug|Any CPU = Debug|Any CPU
+	ExportDebug|Any CPU = ExportDebug|Any CPU
+	ExportRelease|Any CPU = ExportRelease|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6022C74F-39A4-4D6C-A264-CABF52008ECB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6022C74F-39A4-4D6C-A264-CABF52008ECB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6022C74F-39A4-4D6C-A264-CABF52008ECB}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{6022C74F-39A4-4D6C-A264-CABF52008ECB}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{6022C74F-39A4-4D6C-A264-CABF52008ECB}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{6022C74F-39A4-4D6C-A264-CABF52008ECB}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+	EndGlobalSection
+EndGlobal

@@ -10,10 +10,10 @@ config_version=5
 
 [application]
 
-config/name="node-sfx-v2"
+config/name="Node SFX 2"
 run/main_scene="res://src/main.tscn"
-config/features=PackedStringArray("4.3")
-config/icon="res://icon.svg"
+config/features=PackedStringArray("4.3", "C#")
+config/icon="res://src/assets/icons/icon.png"
 
 [debug]
 
@@ -31,11 +31,25 @@ project/assembly_name="node-sfx-v2"
 
 export/convert_text_resources_to_binary=false
 
+[gui]
+
+theme/custom="res://src/main.theme"
+
 [input]
 
 add_node={
 "deadzone": 0.5,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":true,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":65,"key_label":0,"unicode":65,"location":0,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":65,"physical_keycode":0,"key_label":0,"unicode":97,"location":0,"echo":false,"script":null)
+]
+}
+delete={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":88,"physical_keycode":0,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+]
+}
+refresh={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":82,"physical_keycode":0,"key_label":0,"unicode":114,"location":0,"echo":false,"script":null)
 ]
 }
 

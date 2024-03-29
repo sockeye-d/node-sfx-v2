@@ -44,7 +44,7 @@ var slider_value:
 	set(v):
 		v = _constrain(v)
 		slider.value = v
-		line_edit.text = prefix + str(snapped(v, step))
+		line_edit.text = "%s%.*f" % [prefix, max(ceil(log(1.0 / step) / log(10.0)), 0.0), v]
 		slider_value_changed.emit(v)
 		slider_value = v
 	get:
@@ -119,12 +119,11 @@ func _process(_delta: float) -> void:
 
 
 func _on_text_submitted(new_text: String) -> void:
-	var val = new_text.to_float()
+	var val = new_text.trim_prefix(prefix).to_float()
 	
 	val = _constrain(val)
 	
-	line_edit.text = prefix + str(val)
-	slider.value = val
+	slider_value = val
 	
 	line_edit.release_focus()
 

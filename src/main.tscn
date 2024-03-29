@@ -1,9 +1,12 @@
-[gd_scene load_steps=3 format=3 uid="uid://c7g5nmyv07asp"]
+[gd_scene load_steps=5 format=3 uid="uid://c7g5nmyv07asp"]
 
 [ext_resource type="PackedScene" uid="uid://dpkk5woh4logp" path="res://src/ui/node_graph_ui/graph_edit.tscn" id="1_whb5y"]
-[ext_resource type="Theme" uid="uid://b4ny5toh37sjd" path="res://src/main_theme.tres" id="1_wto6n"]
+[ext_resource type="Theme" uid="uid://c83i51o4kj4gb" path="res://src/main.theme" id="1_wto6n"]
+[ext_resource type="Script" path="res://src/Main.cs" id="2_68gvw"]
 
-[node name="Main" type="Control"]
+[sub_resource type="AudioStreamGenerator" id="AudioStreamGenerator_sh2yr"]
+
+[node name="Main" type="Control" node_paths=PackedStringArray("Player", "NodeGraph")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,6 +14,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_wto6n")
+script = ExtResource("2_68gvw")
+Player = NodePath("Player")
+NodeGraph = NodePath("GraphEdit")
+MinAudioFramesPushed = 22050
 
-[node name="GraphEdit" parent="." instance=ExtResource("1_whb5y")]
+[node name="GraphEdit" parent="." node_paths=PackedStringArray("player") instance=ExtResource("1_whb5y")]
 layout_mode = 1
+player = NodePath("../Player")
+
+[node name="Player" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamGenerator_sh2yr")

@@ -1,5 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://ijmja0p3m3x5"]
+[gd_scene load_steps=3 format=3 uid="uid://ijmja0p3m3x5"]
 
+[ext_resource type="Script" path="res://src/ui/node_graph_ui/nodes/sfx_node.gd" id="1_7rg43"]
 [ext_resource type="Script" path="res://src/ui/slider_combo/slider_combo.gd" id="1_gxbkf"]
 
 [node name="OscillatorNode" type="GraphNode"]
@@ -16,7 +17,7 @@ slot/0/right_type = 0
 slot/0/right_color = Color(1, 1, 1, 1)
 slot/0/right_icon = null
 slot/0/draw_stylebox = true
-slot/1/left_enabled = true
+slot/1/left_enabled = false
 slot/1/left_type = 0
 slot/1/left_color = Color(1, 1, 1, 1)
 slot/1/left_icon = null
@@ -43,11 +44,38 @@ slot/3/right_type = 0
 slot/3/right_color = Color(1, 1, 1, 1)
 slot/3/right_icon = null
 slot/3/draw_stylebox = true
+slot/4/left_enabled = true
+slot/4/left_type = 0
+slot/4/left_color = Color(1, 1, 1, 1)
+slot/4/left_icon = null
+slot/4/right_enabled = false
+slot/4/right_type = 0
+slot/4/right_color = Color(1, 1, 1, 1)
+slot/4/right_icon = null
+slot/4/draw_stylebox = true
+script = ExtResource("1_7rg43")
+type = "Oscillator"
 
 [node name="OutputOutput" type="Label" parent="."]
 layout_mode = 2
 text = "Output"
 horizontal_alignment = 2
+
+[node name="TypeSelector" type="OptionButton" parent="."]
+layout_mode = 2
+flat = true
+selected = 0
+item_count = 5
+popup/item_0/text = "Sine"
+popup/item_0/id = 0
+popup/item_1/text = "Square"
+popup/item_1/id = 1
+popup/item_2/text = "Triangle"
+popup/item_2/id = 2
+popup/item_3/text = "Noise"
+popup/item_3/id = 3
+popup/item_4/text = "Smooth noise"
+popup/item_4/id = 4
 
 [node name="FrequencyInput" type="Range" parent="."]
 _import_path = NodePath("")
@@ -74,7 +102,7 @@ texture_repeat = 0
 material = null
 use_parent_material = false
 clip_contents = false
-custom_minimum_size = Vector2(0, 55)
+custom_minimum_size = Vector2(0, 52)
 layout_direction = 0
 layout_mode = 2
 size_flags_horizontal = 1
@@ -96,13 +124,13 @@ mouse_default_cursor_shape = 0
 theme = null
 theme_type_variation = &""
 min_value = 0.0
-max_value = 100.0
+max_value = 5000.0
 step = 1.0
 page = 0.0
-value = 0.0
+value = 440.0
 exp_edit = false
 rounded = false
-allow_greater = false
+allow_greater = true
 allow_lesser = false
 script = ExtResource("1_gxbkf")
 prefix = "Frequency: "
@@ -132,7 +160,7 @@ texture_repeat = 0
 material = null
 use_parent_material = false
 clip_contents = false
-custom_minimum_size = Vector2(0, 55)
+custom_minimum_size = Vector2(0, 52)
 layout_direction = 0
 layout_mode = 2
 size_flags_horizontal = 1
@@ -153,15 +181,15 @@ mouse_force_pass_scroll_events = true
 mouse_default_cursor_shape = 0
 theme = null
 theme_type_variation = &""
-min_value = 0.0
-max_value = 100.0
-step = 1.0
+min_value = -1.0
+max_value = 1.0
+step = 0.01
 page = 0.0
-value = 0.0
+value = 1.0
 exp_edit = false
 rounded = false
-allow_greater = false
-allow_lesser = false
+allow_greater = true
+allow_lesser = true
 script = ExtResource("1_gxbkf")
 prefix = "Amplitude: "
 
@@ -190,7 +218,7 @@ texture_repeat = 0
 material = null
 use_parent_material = false
 clip_contents = false
-custom_minimum_size = Vector2(0, 55)
+custom_minimum_size = Vector2(0, 52)
 layout_direction = 0
 layout_mode = 2
 size_flags_horizontal = 1
@@ -211,14 +239,14 @@ mouse_force_pass_scroll_events = true
 mouse_default_cursor_shape = 0
 theme = null
 theme_type_variation = &""
-min_value = 0.0
-max_value = 100.0
-step = 1.0
+min_value = -1.0
+max_value = 1.0
+step = 0.01
 page = 0.0
-value = 0.0
+value = 9.31323e-10
 exp_edit = false
 rounded = false
-allow_greater = false
-allow_lesser = false
+allow_greater = true
+allow_lesser = true
 script = ExtResource("1_gxbkf")
 prefix = "Phase: "

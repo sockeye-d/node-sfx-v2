@@ -1,4 +1,8 @@
+@tool
 class_name AutomatorNode extends GraphNode
+
+
+@export var type: String = self.title
 
 
 @onready var handle_container: Panel = %HandleContainer

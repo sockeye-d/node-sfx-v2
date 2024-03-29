@@ -1,14 +1,21 @@
-[gd_scene load_steps=6 format=3 uid="uid://dpkk5woh4logp"]
+[gd_scene load_steps=9 format=3 uid="uid://dpkk5woh4logp"]
 
 [ext_resource type="Script" path="res://src/ui/node_graph_ui/graph_edit.gd" id="1_xycfd"]
 [ext_resource type="PackedScene" uid="uid://b2a46kobve2bc" path="res://src/ui/node_graph_ui/nodes/output_node.tscn" id="2_e504x"]
 [ext_resource type="PackedScene" uid="uid://h2uba1em2toh" path="res://src/ui/add_node_window/AddNodeWindow.tscn" id="2_k7ga3"]
+[ext_resource type="Script" path="res://src/ui/slider_combo/slider_combo.gd" id="4_i341j"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_w5vlr"]
 action = &"add_node"
 
 [sub_resource type="Shortcut" id="Shortcut_gi8tx"]
 events = [SubResource("InputEventAction_w5vlr")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_3h3ia"]
+action = &"delete"
+
+[sub_resource type="Shortcut" id="Shortcut_vn8x0"]
+events = [SubResource("InputEventAction_3h3ia")]
 
 [node name="GraphEdit" type="GraphEdit"]
 auto_translate_mode = 1
@@ -20,9 +27,12 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 grid_pattern = 1
+panning_scheme = 1
+right_disconnects = true
 minimap_enabled = false
 show_zoom_label = true
 script = ExtResource("1_xycfd")
+metadata/_edit_vertical_guides_ = [-812.0]
 
 [node name="OutputNode" parent="." instance=ExtResource("2_e504x")]
 layout_mode = 0
@@ -49,13 +59,118 @@ offset_bottom = 40.0
 
 [node name="AddNodeButton" type="Button" parent="MenuHBoxControls"]
 unique_name_in_owner = true
-layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
+layout_mode = 2
+offset_right = 108.0
+offset_bottom = 28.0
+size_flags_vertical = 3
 shortcut = SubResource("Shortcut_gi8tx")
 text = "Add node"
 
+[node name="DeleteNodeButton" type="Button" parent="MenuHBoxControls"]
+unique_name_in_owner = true
+auto_translate_mode = 1
+layout_mode = 2
+offset_top = 32.0
+offset_right = 108.0
+offset_bottom = 60.0
+size_flags_vertical = 3
+disabled = true
+shortcut = SubResource("Shortcut_vn8x0")
+text = "Delete node"
+
+[node name="VolumeSlider" type="Range" parent="MenuHBoxControls"]
+_import_path = NodePath("")
+unique_name_in_owner = true
+process_mode = 0
+process_priority = 0
+process_physics_priority = 0
+process_thread_group = 0
+auto_translate_mode = 0
+editor_description = ""
+visible = true
+modulate = Color(1, 1, 1, 1)
+self_modulate = Color(1, 1, 1, 1)
+show_behind_parent = false
+top_level = false
+clip_children = 0
+light_mask = 1
+visibility_layer = 1
+z_index = 0
+z_as_relative = true
+y_sort_enabled = false
+texture_filter = 0
+texture_repeat = 0
+material = null
+use_parent_material = false
+clip_contents = false
+custom_minimum_size = Vector2(115, 36)
+layout_direction = 0
+layout_mode = 0
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 40.0
+offset_bottom = 52.0
+grow_horizontal = 1
+grow_vertical = 1
+rotation = 0.0
+scale = Vector2(1, 1)
+pivot_offset = Vector2(0, 0)
+size_flags_horizontal = 1
+size_flags_vertical = 1
+size_flags_stretch_ratio = 1.0
+localize_numeral_system = true
+auto_translate = true
+tooltip_text = ""
+focus_neighbor_left = NodePath("")
+focus_neighbor_top = NodePath("")
+focus_neighbor_right = NodePath("")
+focus_neighbor_bottom = NodePath("")
+focus_next = NodePath("")
+focus_previous = NodePath("")
+focus_mode = 0
+mouse_filter = 0
+mouse_force_pass_scroll_events = true
+mouse_default_cursor_shape = 0
+theme = null
+theme_type_variation = &""
+min_value = 0.0
+max_value = 100.0
+step = 1.0
+page = 0.0
+value = 100.0
+exp_edit = false
+rounded = false
+allow_greater = false
+allow_lesser = false
+script = ExtResource("4_i341j")
+prefix = "Volume: "
+slider_visible = false
+
+[node name="UpdateTreeToggle" type="CheckButton" parent="MenuHBoxControls"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 44.0
+offset_bottom = 24.0
+text = "Refresh automatically"
+
+[node name="ForceRefreshTree" type="Button" parent="MenuHBoxControls"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Refresh"
+
+[connection signal="connection_from_empty" from="." to="." method="_on_connection_from_empty"]
 [connection signal="connection_request" from="." to="." method="_on_connection_request"]
 [connection signal="connection_to_empty" from="." to="." method="_on_connection_to_empty"]
 [connection signal="delete_nodes_request" from="." to="." method="_on_delete_nodes_request"]
 [connection signal="disconnection_request" from="." to="." method="_on_disconnection_request"]
+[connection signal="node_deselected" from="." to="." method="_on_node_deselected"]
+[connection signal="node_selected" from="." to="." method="_on_node_selected"]
+[connection signal="toggled" from="MenuHBoxControls/UpdateTreeToggle" to="." method="_on_update_tree_toggle_toggled"]
+[connection signal="pressed" from="MenuHBoxControls/ForceRefreshTree" to="." method="_on_force_refresh_tree_pressed"]
