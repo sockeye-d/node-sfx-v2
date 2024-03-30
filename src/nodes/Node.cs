@@ -111,6 +111,13 @@ namespace NodeSfx.Nodes
             {
                 node.UpdateNodeArguments();
             }
+
+            _UpdateNodeArguments();
+        }
+
+        protected virtual void _UpdateNodeArguments()
+        {
+            return;
         }
     }
 }

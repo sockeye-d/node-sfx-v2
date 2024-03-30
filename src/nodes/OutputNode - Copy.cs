@@ -4,16 +4,16 @@ using System.Collections.Generic;
 
 namespace NodeSfx.Nodes
 {
-    public class TimeNode : Node
+    public class OutputNode : Node
     {
-        public TimeNode(GraphNode source, string name) : base(source, name)
+        public OutputNode(GraphNode source, string name) : base(source, name)
         {
 
         }
 
         protected override double Calculate(double[] args)
         {
-            return Time;
+            return args[0];
         }
     }
 }

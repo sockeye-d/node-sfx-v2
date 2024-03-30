@@ -42,6 +42,11 @@ namespace NodeSfx.Nodes
             return _functionMap[Type](_time, args[1], args[2]);
         }
 
+        protected override void _UpdateNodeArguments()
+        {
+            Type = (OscillatorType)Source.GetNode<OptionButton>("TypeSelector").Selected;
+        }
+
         private static double _Mix(double a, double b, double fac)
         {
             return a + (b - a) * fac;
