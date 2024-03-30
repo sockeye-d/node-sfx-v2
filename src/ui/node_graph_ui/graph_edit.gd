@@ -2,7 +2,7 @@ extends GraphEdit
 
 
 signal auto_refresh_changed(state: bool)
-signal refresh
+signal connection_changed
 
 
 var nodes: Dictionary
@@ -63,6 +63,7 @@ func _on_connection_request(from_node: StringName, from_port: int, to_node: Stri
 		if con.to_node == to_node and con.to_port == to_port:
 			disconnect_node(con.from_node, con.from_port, con.to_node, con.to_port)
 	connect_node(from_node, from_port, to_node, to_port)
+	connection_changed.emit()
 
 
 func _on_connection_to_empty(from_node: StringName, from_port: int, release_position: Vector2) -> void:
@@ -72,10 +73,12 @@ func _on_connection_to_empty(from_node: StringName, from_port: int, release_posi
 		return
 	
 	connect_node(from_node, from_port, node.name, 0)
+	connection_changed.emit()
 
 
 func _on_disconnection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:
 	disconnect_node(from_node, from_port, to_node, to_port)
+	connection_changed.emit()
 
 
 func _on_delete_nodes_request(nodes: Array[StringName]) -> void:
@@ -96,6 +99,7 @@ func _on_delete_nodes_request(nodes: Array[StringName]) -> void:
 		if node == &"OutputNode":
 			continue
 		get_node(NodePath(node)).queue_free()
+	connection_changed.emit()
 
 
 func _on_delete_node_button_pressed() -> void:
@@ -123,6 +127,7 @@ func _on_connection_from_empty(to_node: StringName, to_port: int, release_positi
 		return
 	
 	connect_node(node.name, 0, to_node, to_port)
+	connection_changed.emit()
 
 
 func _change_volume(new_volume: float) -> void:
@@ -134,4 +139,4 @@ func _on_update_tree_toggle_toggled(toggled_on: bool) -> void:
 
 
 func _on_force_refresh_tree_pressed() -> void:
-	refresh.emit()
+	connection_changed.emit()

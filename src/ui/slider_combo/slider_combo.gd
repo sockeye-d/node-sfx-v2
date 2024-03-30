@@ -128,6 +128,14 @@ func _on_text_submitted(new_text: String) -> void:
 	line_edit.release_focus()
 
 
+func _on_line_edit_focus_exited() -> void:
+	var val = line_edit.text.trim_prefix(prefix).to_float()
+	
+	val = _constrain(val)
+	
+	slider_value = val
+
+
 func _on_value_changed(v: float) -> void:
 	slider_value = v
 	slider_value_changed_without_set.emit(slider_value)

@@ -1,5 +1,7 @@
 using Godot;
 using SfxNode = NodeSfx.Nodes.Node;
+using GdDictionary = Godot.Collections.Dictionary;
+using GdArray = Godot.Collections.Array;
 using System;
 using NodeSfx.Nodes;
 using System.Collections.Generic;
@@ -38,7 +40,7 @@ public partial class Main : Control
     private AudioStreamGeneratorPlayback _audioPlayback;
     private double _sampleRate;
     private double _time;
-    private bool _autoRefresh;
+    private bool _autoRefresh = true;
 
     private SfxNode _nodeTree = null;
 
@@ -46,8 +48,6 @@ public partial class Main : Control
     public AudioStreamPlayer Player;
     [Export]
     public GraphEdit NodeGraph;
-    [Export]
-    public int MinAudioFramesPushed = 4410;
 
     public override void _Ready()
     {
@@ -55,15 +55,11 @@ public partial class Main : Control
         _sampleRate = ((AudioStreamGenerator)Player.Stream).MixRate;
         _audioPlayback = (AudioStreamGeneratorPlayback)Player.GetStreamPlayback();
         NodeGraph.Connect("auto_refresh_changed", new Callable(this, "_OnAutoRefreshChanged"));
-        NodeGraph.Connect("refresh", new Callable(this, "_RefreshTree"));
+        NodeGraph.Connect("connection_changed", new Callable(this, "_RefreshTree"));
     }
 
-    public override void _Process(double delta)
+    public override void _PhysicsProcess(double delta)
     {
-        if (Input.IsActionJustPressed("refresh"))
-        {
-            _nodeTree = _ConstructNodeTree(_ConvertGodotConnections(NodeGraph.GetConnectionList()), "OutputNode");
-        }
         _FillAudioBuffer();
     }
 
@@ -71,15 +67,9 @@ public partial class Main : Control
     {
         int framesAvailable = _audioPlayback.GetFramesAvailable();
 
-        if (framesAvailable < MinAudioFramesPushed)
-        {
-            return;
-        }
-
         if (_autoRefresh)
         {
-            _RefreshTree();
-            GD.Print("refreshed tree");
+            _nodeTree?.UpdateNodeArguments();
         }
 
         double invSampleRate = 1.0 / _sampleRate;
@@ -88,13 +78,13 @@ public partial class Main : Control
         for (int i = 0; i < framesAvailable; i++)
         {
             SfxNode.Time = _time;
-            double val = _nodeTree == null ? 0.0 : _nodeTree.Execute();
+            double val = (_nodeTree?.Execute()).GetValueOrDefault();
             _audioPlayback.PushFrame(new Vector2((float)val, (float)val));
             _time += invSampleRate;
         }
     }
 
-    private Connection[] _ConvertGodotConnections(Godot.Collections.Array<Godot.Collections.Dictionary> connections)
+    private Connection[] _ConvertGodotConnections(Godot.Collections.Array<GdDictionary> connections)
     {
         Connection[] newConnections = new Connection[connections.Count];
         for (int i = 0; i < connections.Count; i++)
@@ -105,31 +95,16 @@ public partial class Main : Control
         return newConnections;
     }
 
-    private double[] _GetNodeArguments(GraphNode node)
-    {
-        List<double> args = new();
-
-        foreach (Godot.Node child in node.GetChildren())
-        {
-            if (child.Name.ToString().Contains("Input"))
-            {
-                args.Add((double)child.Get("slider_value"));
-            }
-        }
-
-        return args.ToArray();
-    }
-
     private SfxNode _GetSfxNodeFromGraphNode(GraphNode node)
     {
         string type = node.Get("type").AsString();
         return type switch
         {
-            "Output" => new OutputNode(_GetNodeArguments(node), node.Name),
-            "Oscillator" => new OscillatorNode(_GetNodeArguments(node), node.Name, (OscillatorNode.OscillatorType)node.GetNode<OptionButton>("TypeSelector").Selected),
-            "Oscilloscope" => new OscilloscopeNode(_GetNodeArguments(node), node.Name, node.GetNode<Control>("Surface")),
+            "Output" => new OutputNode(node, node.Name),
+            "Oscillator" => new OscillatorNode(node, node.Name, (OscillatorNode.OscillatorType)node.GetNode<OptionButton>("TypeSelector").Selected),
+            "Oscilloscope" => new OscilloscopeNode(node, node.Name, node.GetNode<Control>("Surface")),
             _ => null,
-        }; ;
+        };
     }
 
     private SfxNode _ConstructNodeTree(Connection[] connections, string root)

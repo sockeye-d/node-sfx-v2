@@ -17,8 +17,9 @@ signal item_selected_or_canceled(item: String)
 		return items
 
 
-@onready var tree: Tree = %ItemsTree
-@onready var btn: Button = %Button
+@onready var tree: Tree = %ItemsTree as Tree
+@onready var btn: Button = %AddButton as Button
+@onready var cancel_button: Button = %CancelButton as Button
 
 
 func show():
@@ -32,6 +33,7 @@ func _ready() -> void:
 	populate_tree()
 	tree.get_root().set_collapsed_recursive(true)
 	tree.get_root().uncollapse_tree()
+	
 
 
 func _process(delta: float) -> void:

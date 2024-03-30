@@ -1,68 +1,74 @@
-[gd_scene load_steps=15 format=3 uid="uid://h2uba1em2toh"]
+[gd_scene load_steps=17 format=3 uid="uid://h2uba1em2toh"]
 
-[ext_resource type="Script" path="res://src/ui/add_node_window/add_node_window.gd" id="1_eo7hh"]
-[ext_resource type="Script" path="res://src/ui/add_node_window/node_item.gd" id="2_44e8e"]
+[ext_resource type="Script" path="res://src/ui/add_node_window/add_node_window.gd" id="1_2vlg5"]
+[ext_resource type="Script" path="res://src/ui/add_node_window/node_item.gd" id="2_ymasl"]
 
 [sub_resource type="Resource" id="Resource_f71j8"]
-script = ExtResource("2_44e8e")
+script = ExtResource("2_ymasl")
 name = "Time"
-children = Array[ExtResource("2_44e8e")]([])
+children = Array[ExtResource("2_ymasl")]([])
 
 [sub_resource type="Resource" id="Resource_yelw7"]
-script = ExtResource("2_44e8e")
+script = ExtResource("2_ymasl")
 name = "Input"
-children = Array[ExtResource("2_44e8e")]([SubResource("Resource_f71j8")])
+children = Array[ExtResource("2_ymasl")]([SubResource("Resource_f71j8")])
 
 [sub_resource type="Resource" id="Resource_vo10f"]
-script = ExtResource("2_44e8e")
+script = ExtResource("2_ymasl")
 name = "Oscillator"
-children = Array[ExtResource("2_44e8e")]([])
+children = Array[ExtResource("2_ymasl")]([])
 
 [sub_resource type="Resource" id="Resource_uujhu"]
-script = ExtResource("2_44e8e")
+script = ExtResource("2_ymasl")
 name = "Generator"
-children = Array[ExtResource("2_44e8e")]([SubResource("Resource_vo10f")])
+children = Array[ExtResource("2_ymasl")]([SubResource("Resource_vo10f")])
 
 [sub_resource type="Resource" id="Resource_vyfyb"]
-script = ExtResource("2_44e8e")
+script = ExtResource("2_ymasl")
 name = "Automator"
-children = Array[ExtResource("2_44e8e")]([])
+children = Array[ExtResource("2_ymasl")]([])
 
 [sub_resource type="Resource" id="Resource_6qdbb"]
-script = ExtResource("2_44e8e")
+script = ExtResource("2_ymasl")
 name = "Math"
-children = Array[ExtResource("2_44e8e")]([])
+children = Array[ExtResource("2_ymasl")]([])
 
 [sub_resource type="Resource" id="Resource_i6ii3"]
-script = ExtResource("2_44e8e")
+script = ExtResource("2_ymasl")
 name = "Modifier"
-children = Array[ExtResource("2_44e8e")]([SubResource("Resource_vyfyb"), SubResource("Resource_6qdbb")])
+children = Array[ExtResource("2_ymasl")]([SubResource("Resource_vyfyb"), SubResource("Resource_6qdbb")])
 
 [sub_resource type="Resource" id="Resource_5uflc"]
-script = ExtResource("2_44e8e")
+script = ExtResource("2_ymasl")
 name = "Exponential smoother"
-children = Array[ExtResource("2_44e8e")]([])
+children = Array[ExtResource("2_ymasl")]([])
 
 [sub_resource type="Resource" id="Resource_tee1t"]
-script = ExtResource("2_44e8e")
+script = ExtResource("2_ymasl")
 name = "Filter"
-children = Array[ExtResource("2_44e8e")]([SubResource("Resource_5uflc")])
+children = Array[ExtResource("2_ymasl")]([SubResource("Resource_5uflc")])
 
 [sub_resource type="Resource" id="Resource_tp4do"]
-script = ExtResource("2_44e8e")
+script = ExtResource("2_ymasl")
 name = "Oscilloscope"
-children = Array[ExtResource("2_44e8e")]([])
+children = Array[ExtResource("2_ymasl")]([])
 
 [sub_resource type="Resource" id="Resource_7yvyo"]
-script = ExtResource("2_44e8e")
+script = ExtResource("2_ymasl")
 name = "root"
-children = Array[ExtResource("2_44e8e")]([SubResource("Resource_yelw7"), SubResource("Resource_uujhu"), SubResource("Resource_i6ii3"), SubResource("Resource_tee1t"), SubResource("Resource_tp4do")])
+children = Array[ExtResource("2_ymasl")]([SubResource("Resource_yelw7"), SubResource("Resource_uujhu"), SubResource("Resource_i6ii3"), SubResource("Resource_tee1t"), SubResource("Resource_tp4do")])
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mr3ur"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
 content_margin_bottom = 4.0
+
+[sub_resource type="InputEventAction" id="InputEventAction_uslob"]
+action = &"cancel"
+
+[sub_resource type="Shortcut" id="Shortcut_7n1sx"]
+events = [SubResource("InputEventAction_uslob")]
 
 [node name="AddNodeWindow" type="Window"]
 title = "Add node..."
@@ -71,7 +77,7 @@ size = Vector2i(300, 500)
 transient = true
 exclusive = true
 popup_window = true
-script = ExtResource("1_eo7hh")
+script = ExtResource("1_2vlg5")
 items = SubResource("Resource_7yvyo")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
@@ -103,13 +109,26 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="AddButton" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 disabled = true
 text = "Add"
+
+[node name="CancelButton" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+auto_translate_mode = 1
+layout_mode = 2
+size_flags_horizontal = 3
+shortcut = SubResource("Shortcut_7n1sx")
+text = "Cancel"
 
 [connection signal="close_requested" from="." to="." method="_on_close_requested"]
 [connection signal="item_activated" from="PanelContainer/VBoxContainer/ScrollContainer/ItemsTree" to="." method="_on_items_tree_item_activated"]
 [connection signal="item_selected" from="PanelContainer/VBoxContainer/ScrollContainer/ItemsTree" to="." method="_on_items_tree_item_selected"]
-[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/AddButton" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/CancelButton" to="." method="_on_close_requested"]

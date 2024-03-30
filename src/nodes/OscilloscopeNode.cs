@@ -11,7 +11,7 @@ namespace NodeSfx.Nodes
         private float _scale;
         private float _offset;
         private Queue<float> _queue;
-        public OscilloscopeNode(double[] arguments, string name, Control surface) : base(arguments, name)
+        public OscilloscopeNode(GraphNode source, string name, Control surface) : base(source, name)
         {
             _surface = surface;
             _surface.Draw += _Draw;

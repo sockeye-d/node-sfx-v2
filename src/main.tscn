@@ -17,7 +17,6 @@ theme = ExtResource("1_wto6n")
 script = ExtResource("2_68gvw")
 Player = NodePath("Player")
 NodeGraph = NodePath("GraphEdit")
-MinAudioFramesPushed = 22050
 
 [node name="GraphEdit" parent="." node_paths=PackedStringArray("player") instance=ExtResource("1_whb5y")]
 layout_mode = 1

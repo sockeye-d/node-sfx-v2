@@ -1,3 +1,4 @@
+using Godot;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -31,6 +32,7 @@ namespace NodeSfx.Nodes
         /// </summary>
         public Dictionary<int, Node> ConnectedNodes;
         public string Name;
+        public GraphNode Source;
 
         /// <summary>
         /// Override this to provide functionality to the node
@@ -39,9 +41,9 @@ namespace NodeSfx.Nodes
         /// <returns></returns>
         protected abstract double Calculate(double[] args);
 
-        public Node(double[] arguments, string name)
+        public Node(GraphNode source, string name)
         {
-            Arguments = arguments;
+            Source = source;
             Name = name;
             ConnectedNodes = new ();
         }
@@ -88,6 +90,26 @@ namespace NodeSfx.Nodes
             foreach (var node in ConnectedNodes.Values)
             {
                 node.Dispose();
+            }
+        }
+
+        public void UpdateNodeArguments()
+        {
+            List<double> args = new();
+
+            foreach (Godot.Node child in Source.GetChildren())
+            {
+                if (child.Name.ToString().Contains("Input"))
+                {
+                    args.Add((double)child.Get("slider_value"));
+                }
+            }
+
+            Arguments = args.ToArray();
+
+            foreach (var node in ConnectedNodes.Values)
+            {
+                node.UpdateNodeArguments();
             }
         }
     }

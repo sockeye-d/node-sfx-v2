@@ -1,3 +1,4 @@
+using Godot;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -19,26 +20,26 @@ namespace NodeSfx.Nodes
 
         private double _time;
 
-        private Dictionary<OscillatorType, Func<double, double, double, double, double>> _functionMap = new()
+        private Dictionary<OscillatorType, Func<double, double, double, double>> _functionMap = new()
         {
-            [OscillatorType.SINE] = (time, freq, amp, phase) => Math.Sin(Math.Tau * (time * freq + phase)) * amp,
-            [OscillatorType.SQUARE] = (time, freq, amp, phase) => (2.0 * (((time * freq) + phase) % 1.0) - 1.0) * amp,
-            [OscillatorType.TRIANGLE] = (time, freq, amp, phase) => (2.0 * ((time * freq) + phase) % 1.0 - 1.0) * amp,
-            [OscillatorType.NOISE] = (time, freq, amp, phase) => _HashTime(time * 10000.0) * amp,
-            [OscillatorType.SMOOTH_NOISE] = (time, freq, amp, phase) => _Mix(_HashTime(Math.Floor((time * freq) + phase)), _HashTime(Math.Floor((time * freq) + phase) + 1.0), _Smoothstep(time % 1.0)) * amp,
+            [OscillatorType.SINE] = (time, amp, phase) => Math.Sin(Math.Tau * (time + phase)) * amp,
+            [OscillatorType.SQUARE] = (time, amp, phase) => (2.0 * Math.Floor(2.0 * ((time + phase) % 1.0)) - 1.0) * amp,
+            [OscillatorType.TRIANGLE] = (time, amp, phase) => (2.0 * ((time + phase) % 1.0) - 1.0) * amp,
+            [OscillatorType.NOISE] = (time, amp, phase) => _HashTime(time * 10000.0) * amp,
+            [OscillatorType.SMOOTH_NOISE] = (time, amp, phase) =>_SmoothNoise(time + phase) * amp,
         };
 
         public OscillatorType Type;
 
-        public OscillatorNode(double[] arguments, string name, OscillatorType type) : base(arguments, name)
+        public OscillatorNode(GraphNode source, string name, OscillatorType type) : base(source, name)
         {
             Type = type;
         }
 
         protected override double Calculate(double[] args)
         {
-            _time += Node.InvSampleRate;
-            return _functionMap[Type](Node.Time, args[0], args[1], args[2]);
+            _time += InvSampleRate * args[0];
+            return _functionMap[Type](_time, args[1], args[2]);
         }
 
         private static double _Mix(double a, double b, double fac)
@@ -57,6 +58,14 @@ namespace NodeSfx.Nodes
         private static double _Smoothstep(double x)
         {
             return 3.0 * x * x - 2.0 * x * x * x;
+        }
+
+        private static double _SmoothNoise(double x)
+        {
+            double a = _HashTime(Math.Floor(x));
+            double b = _HashTime(Math.Floor(x) + 1.0);
+            double f = _Smoothstep(x % 1.0);
+            return _Mix(a, b, f);
         }
     }
 }

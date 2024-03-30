@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://src/ui/node_graph_ui/graph_edit.gd" id="1_xycfd"]
 [ext_resource type="PackedScene" uid="uid://b2a46kobve2bc" path="res://src/ui/node_graph_ui/nodes/output_node.tscn" id="2_e504x"]
-[ext_resource type="PackedScene" uid="uid://h2uba1em2toh" path="res://src/ui/add_node_window/AddNodeWindow.tscn" id="2_k7ga3"]
+[ext_resource type="PackedScene" uid="uid://h2uba1em2toh" path="res://src/ui/add_node_window/add_node_window.tscn" id="2_k7ga3"]
 [ext_resource type="Script" path="res://src/ui/slider_combo/slider_combo.gd" id="4_i341j"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_w5vlr"]
@@ -85,7 +85,7 @@ process_mode = 0
 process_priority = 0
 process_physics_priority = 0
 process_thread_group = 0
-auto_translate_mode = 0
+auto_translate_mode = 1
 editor_description = ""
 visible = true
 modulate = Color(1, 1, 1, 1)
@@ -156,6 +156,7 @@ unique_name_in_owner = true
 layout_mode = 0
 offset_right = 44.0
 offset_bottom = 24.0
+button_pressed = true
 text = "Refresh automatically"
 
 [node name="ForceRefreshTree" type="Button" parent="MenuHBoxControls"]
