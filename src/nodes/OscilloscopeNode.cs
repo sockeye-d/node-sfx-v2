@@ -11,9 +11,9 @@ namespace NodeSfx.Nodes
         private float _scale;
         private float _offset;
         private Queue<float> _queue;
-        public OscilloscopeNode(GraphNode source, string name, Control surface) : base(source, name)
+        public OscilloscopeNode(GraphNode source, string name) : base(source, name)
         {
-            _surface = surface;
+            _surface = source.GetNode<Control>("Surface");
             _surface.Draw += _Draw;
             _queue = new Queue<float>();
         }
@@ -45,7 +45,7 @@ namespace NodeSfx.Nodes
                     float x = i / (_queue.Count - 1.0f);
                     float y = value * _scale + _offset;
                     y = Math.Clamp(y, 0.0f, 1.0f);
-                    points[i] = new Vector2(x, y) * _surface.GetRect().Abs().Size;
+                    points[i] = new Vector2(x, 1.0f - y) * _surface.GetRect().Abs().Size;
                     i++;
                 }
 

@@ -28,7 +28,7 @@ var old_position: Vector2
 var mouse_drag_position: Vector2 = MOUSE_DRAG_NONE
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if not mouse_drag_position == MOUSE_DRAG_NONE:
 		position = old_position + get_parent().get_local_mouse_position() - mouse_drag_position
 		position = position.clamp(Vector2.ZERO, get_parent_area_size())

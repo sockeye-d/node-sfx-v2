@@ -1,0 +1,75 @@
+[gd_scene load_steps=4 format=3 uid="uid://c4umntkoaq6qw"]
+
+[ext_resource type="Script" path="res://src/ui/text_edit_popup/text_edit_popup.gd" id="1_ltphf"]
+
+[sub_resource type="InputEventAction" id="InputEventAction_uslob"]
+action = &"cancel"
+
+[sub_resource type="Shortcut" id="Shortcut_cwm6s"]
+events = [SubResource("InputEventAction_uslob")]
+
+[node name="TextEditPopup" type="Window"]
+title = "Text input"
+initial_position = 5
+size = Vector2i(300, 100)
+transient = true
+exclusive = true
+popup_window = true
+script = ExtResource("1_ltphf")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+auto_translate_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+auto_translate_mode = 1
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="MarginContainer2" type="MarginContainer" parent="PanelContainer/VBoxContainer"]
+auto_translate_mode = 1
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 2
+
+[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/MarginContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+context_menu_enabled = false
+select_all_on_focus = true
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer"]
+auto_translate_mode = 1
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/MarginContainer"]
+auto_translate_mode = 1
+layout_mode = 2
+
+[node name="AddButton" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+auto_translate_mode = 1
+layout_mode = 2
+size_flags_horizontal = 3
+disabled = true
+text = "Add"
+
+[node name="CancelButton" type="Button" parent="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+auto_translate_mode = 1
+layout_mode = 2
+size_flags_horizontal = 3
+shortcut = SubResource("Shortcut_cwm6s")
+text = "Cancel"

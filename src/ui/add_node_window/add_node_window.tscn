@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://h2uba1em2toh"]
+[gd_scene load_steps=22 format=3 uid="uid://h2uba1em2toh"]
 
 [ext_resource type="Script" path="res://src/ui/add_node_window/add_node_window.gd" id="1_2vlg5"]
 [ext_resource type="Script" path="res://src/ui/add_node_window/node_item.gd" id="2_ymasl"]
@@ -33,30 +33,55 @@ script = ExtResource("2_ymasl")
 name = "Math"
 children = Array[ExtResource("2_ymasl")]([])
 
+[sub_resource type="Resource" id="Resource_n2x62"]
+script = ExtResource("2_ymasl")
+name = "Mix"
+children = Array[ExtResource("2_ymasl")]([])
+
 [sub_resource type="Resource" id="Resource_i6ii3"]
 script = ExtResource("2_ymasl")
 name = "Modifier"
-children = Array[ExtResource("2_ymasl")]([SubResource("Resource_vyfyb"), SubResource("Resource_6qdbb")])
+children = Array[ExtResource("2_ymasl")]([SubResource("Resource_vyfyb"), SubResource("Resource_6qdbb"), SubResource("Resource_n2x62")])
 
 [sub_resource type="Resource" id="Resource_5uflc"]
 script = ExtResource("2_ymasl")
-name = "Exponential smoother"
+name = "Exponential low pass"
 children = Array[ExtResource("2_ymasl")]([])
+
+[sub_resource type="Resource" id="Resource_aq18e"]
+script = ExtResource("2_ymasl")
+name = "Convolutional low pass"
+children = Array[ExtResource("2_ymasl")]([])
+
+[sub_resource type="Resource" id="Resource_vd7lo"]
+script = ExtResource("2_ymasl")
+name = "Low-pass"
+children = Array[ExtResource("2_ymasl")]([SubResource("Resource_5uflc"), SubResource("Resource_aq18e")])
 
 [sub_resource type="Resource" id="Resource_tee1t"]
 script = ExtResource("2_ymasl")
 name = "Filter"
-children = Array[ExtResource("2_ymasl")]([SubResource("Resource_5uflc")])
+children = Array[ExtResource("2_ymasl")]([SubResource("Resource_vd7lo")])
 
 [sub_resource type="Resource" id="Resource_tp4do"]
 script = ExtResource("2_ymasl")
 name = "Oscilloscope"
 children = Array[ExtResource("2_ymasl")]([])
 
+[sub_resource type="Resource" id="Resource_m6jx8"]
+script = ExtResource("2_ymasl")
+name = "Display"
+children = Array[ExtResource("2_ymasl")]([])
+
+[sub_resource type="Resource" id="Resource_6ojmt"]
+script = ExtResource("2_ymasl")
+name = "Visual"
+children = Array[ExtResource("2_ymasl")]([SubResource("Resource_tp4do"), SubResource("Resource_m6jx8")])
+
 [sub_resource type="Resource" id="Resource_7yvyo"]
 script = ExtResource("2_ymasl")
 name = "root"
-children = Array[ExtResource("2_ymasl")]([SubResource("Resource_yelw7"), SubResource("Resource_uujhu"), SubResource("Resource_i6ii3"), SubResource("Resource_tee1t"), SubResource("Resource_tp4do")])
+children = Array[ExtResource("2_ymasl")]([SubResource("Resource_yelw7"), SubResource("Resource_uujhu"), SubResource("Resource_i6ii3"), SubResource("Resource_tee1t"), SubResource("Resource_6ojmt")])
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mr3ur"]
 content_margin_left = 4.0

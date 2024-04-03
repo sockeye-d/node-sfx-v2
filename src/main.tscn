@@ -1,10 +1,11 @@
 [gd_scene load_steps=5 format=3 uid="uid://c7g5nmyv07asp"]
 
-[ext_resource type="PackedScene" uid="uid://dpkk5woh4logp" path="res://src/ui/node_graph_ui/graph_edit.tscn" id="1_whb5y"]
+[ext_resource type="PackedScene" uid="uid://dpkk5woh4logp" path="res://src/ui/node_graph_ui/sfx_graph_edit.tscn" id="1_whb5y"]
 [ext_resource type="Theme" uid="uid://c83i51o4kj4gb" path="res://src/main.theme" id="1_wto6n"]
 [ext_resource type="Script" path="res://src/Main.cs" id="2_68gvw"]
 
 [sub_resource type="AudioStreamGenerator" id="AudioStreamGenerator_sh2yr"]
+buffer_length = 0.1
 
 [node name="Main" type="Control" node_paths=PackedStringArray("Player", "NodeGraph")]
 layout_mode = 3

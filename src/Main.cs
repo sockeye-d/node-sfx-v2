@@ -1,10 +1,8 @@
 using Godot;
 using SfxNode = NodeSfx.Nodes.Node;
 using GdDictionary = Godot.Collections.Dictionary;
-using GdArray = Godot.Collections.Array;
-using System;
 using NodeSfx.Nodes;
-using System.Collections.Generic;
+using System;
 
 public partial class Main : Control
 {
@@ -40,8 +38,6 @@ public partial class Main : Control
     private AudioStreamGeneratorPlayback _audioPlayback;
     private double _sampleRate;
     private double _time;
-    private bool _autoRefresh = true;
-
     private SfxNode _nodeTree = null;
 
     [Export]
@@ -51,27 +47,26 @@ public partial class Main : Control
 
     public override void _Ready()
     {
-        Player.Play();
-        _sampleRate = ((AudioStreamGenerator)Player.Stream).MixRate;
-        _audioPlayback = (AudioStreamGeneratorPlayback)Player.GetStreamPlayback();
-        NodeGraph.Connect("auto_refresh_changed", new Callable(this, "_OnAutoRefreshChanged"));
         NodeGraph.Connect("connection_changed", new Callable(this, "_RefreshTree"));
+        NodeGraph.Connect("paused", new Callable(this, "_Pause"));
+        NodeGraph.Connect("played", new Callable(this, "_Play"));
+        NodeGraph.Connect("rewound", new Callable(this, "_Rewind"));
+        NodeGraph.Connect("stopped", new Callable(this, "_Stop"));
+        _time = 0;
     }
 
     public override void _PhysicsProcess(double delta)
     {
-        _FillAudioBuffer();
+        if (Player.Playing && _audioPlayback != null)
+        {
+            _FillAudioBuffer();
+        }
     }
 
     private void _FillAudioBuffer()
     {
         int framesAvailable = _audioPlayback.GetFramesAvailable();
-
-        if (_autoRefresh)
-        {
-            _nodeTree?.UpdateNodeArguments();
-        }
-
+        _nodeTree?.UpdateNodeArguments();
         double invSampleRate = 1.0 / _sampleRate;
         SfxNode.SampleRate = _sampleRate;
 
@@ -101,8 +96,15 @@ public partial class Main : Control
         return type switch
         {
             "Output" => new OutputNode(node, node.Name),
-            "Oscillator" => new OscillatorNode(node, node.Name, (OscillatorNode.OscillatorType)node.GetNode<OptionButton>("TypeSelector").Selected),
-            "Oscilloscope" => new OscilloscopeNode(node, node.Name, node.GetNode<Control>("Surface")),
+            "Oscillator" => new OscillatorNode(node, node.Name),
+            "Oscilloscope" => new OscilloscopeNode(node, node.Name),
+            "Time" => new TimeNode(node, node.Name),
+            "Automator" => new AutomatorNode(node, node.Name),
+            "Display" => new DisplayNode(node, node.Name),
+            "Math" => new MathNode(node, node.Name),
+            "Exponential low pass" => new ExponentialLowPassNode(node, node.Name),
+            "Mix" => new MixNode(node, node.Name),
+            "Convolutional low pass" => new ConvolutionalLowPassNode(node, node.Name),
             _ => null,
         };
     }
@@ -122,14 +124,32 @@ public partial class Main : Control
         return rootNode;
     }
 
-    private void _OnAutoRefreshChanged(bool state)
-    {
-        _autoRefresh = state;
-    }
-
     private void _RefreshTree()
     {
         _nodeTree?.Dispose();
         _nodeTree = _ConstructNodeTree(_ConvertGodotConnections(NodeGraph.GetConnectionList()), "OutputNode");
+    }
+
+    private void _Pause()
+    {
+        Player.Playing = false;
+    }
+
+    private void _Play()
+    {
+        Player.Play();
+        _audioPlayback = (AudioStreamGeneratorPlayback)Player.GetStreamPlayback();
+        _sampleRate = ((AudioStreamGenerator)Player.Stream).MixRate;
+    }
+
+    private void _Stop()
+    {
+        _Pause();
+        _Rewind();
+    }
+
+    private void _Rewind()
+    {
+        _time = 0.0;
     }
 }

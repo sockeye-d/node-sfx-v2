@@ -14,6 +14,7 @@ namespace NodeSfx.Nodes
             SINE,
             SQUARE,
             TRIANGLE,
+            SAWTOOTH,
             NOISE,
             SMOOTH_NOISE,
         }
@@ -24,16 +25,17 @@ namespace NodeSfx.Nodes
         {
             [OscillatorType.SINE] = (time, amp, phase) => Math.Sin(Math.Tau * (time + phase)) * amp,
             [OscillatorType.SQUARE] = (time, amp, phase) => (2.0 * Math.Floor(2.0 * ((time + phase) % 1.0)) - 1.0) * amp,
-            [OscillatorType.TRIANGLE] = (time, amp, phase) => (2.0 * ((time + phase) % 1.0) - 1.0) * amp,
+            [OscillatorType.TRIANGLE] = (time, amp, phase) => (2.0 * Math.Abs(2.0 * ((time + phase) % 1.0) - 1.0) - 1.0) * amp,
+            [OscillatorType.SAWTOOTH] = (time, amp, phase) => (2.0 * ((time + phase) % 1.0) - 1.0) * amp,
             [OscillatorType.NOISE] = (time, amp, phase) => _HashTime(time * 10000.0) * amp,
             [OscillatorType.SMOOTH_NOISE] = (time, amp, phase) =>_SmoothNoise(time + phase) * amp,
         };
 
         public OscillatorType Type;
 
-        public OscillatorNode(GraphNode source, string name, OscillatorType type) : base(source, name)
+        public OscillatorNode(GraphNode source, string name) : base(source, name)
         {
-            Type = type;
+            
         }
 
         protected override double Calculate(double[] args)
@@ -45,11 +47,6 @@ namespace NodeSfx.Nodes
         protected override void _UpdateNodeArguments()
         {
             Type = (OscillatorType)Source.GetNode<OptionButton>("TypeSelector").Selected;
-        }
-
-        private static double _Mix(double a, double b, double fac)
-        {
-            return a + (b - a) * fac;
         }
 
         private static double _HashTime(double time)

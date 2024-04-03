@@ -12,6 +12,7 @@ class_name AutomatorNode extends GraphNode
 @onready var line_display: Line2D = %LineDisplay
 
 
+var normalized_points: PackedVector2Array
 var points: PackedVector2Array
 var handle_scene: PackedScene = preload("./handle.tscn")
 var handles: Array[Handle]
@@ -30,7 +31,7 @@ func _ready() -> void:
 	_update_points()
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	remove_button.disabled = selected_handle == null or handles.size() == 1
 	x_slider.editable = not selected_handle == null
 	y_slider.editable = not selected_handle == null
@@ -86,9 +87,12 @@ func _on_y_slider_slider_value_changed(v: float) -> void:
 
 func _update_points() -> void:
 	points.clear()
+	normalized_points.clear()
 	for handle in handles:
 		points.append(handle.position)
+		normalized_points.append(Vector2(handle.normalized_position.x, 1.0 - handle.normalized_position.y))
 	points.sort()
+	normalized_points.sort()
 	
 	line_display.clear_points()
 	line_display.points = points

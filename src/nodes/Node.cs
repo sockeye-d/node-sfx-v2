@@ -41,6 +41,21 @@ namespace NodeSfx.Nodes
         /// <returns></returns>
         protected abstract double Calculate(double[] args);
 
+        protected virtual void _UpdateNodeArguments()
+        {
+            return;
+        }
+
+        protected static double _Remap(double x, double fromMin, double fromMax, double toMin, double toMax)
+        {
+            return (x - fromMin) / (fromMax - fromMin) * (toMax - toMin) + toMin;
+        }
+
+        protected static double _Mix(double a, double b, double fac)
+        {
+            return a + (b - a) * fac;
+        }
+
         public Node(GraphNode source, string name)
         {
             Source = source;
@@ -113,11 +128,6 @@ namespace NodeSfx.Nodes
             }
 
             _UpdateNodeArguments();
-        }
-
-        protected virtual void _UpdateNodeArguments()
-        {
-            return;
         }
     }
 }

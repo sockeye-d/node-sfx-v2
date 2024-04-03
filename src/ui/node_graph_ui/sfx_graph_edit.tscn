@@ -1,0 +1,231 @@
+[gd_scene load_steps=23 format=3 uid="uid://dpkk5woh4logp"]
+
+[ext_resource type="Script" path="res://src/ui/node_graph_ui/sfx_graph_edit.gd" id="1_xycfd"]
+[ext_resource type="PackedScene" uid="uid://b2a46kobve2bc" path="res://src/ui/node_graph_ui/nodes/output_node.tscn" id="2_e504x"]
+[ext_resource type="PackedScene" uid="uid://h2uba1em2toh" path="res://src/ui/add_node_window/add_node_window.tscn" id="2_k7ga3"]
+[ext_resource type="Script" path="res://src/ui/slider_combo/slider_combo.gd" id="4_i341j"]
+[ext_resource type="PackedScene" uid="uid://c4umntkoaq6qw" path="res://src/ui/text_edit_popup/text_edit_popup.tscn" id="4_n84ql"]
+[ext_resource type="Script" path="res://src/ui/node_graph_ui/play_pause_button.gd" id="6_6dob5"]
+[ext_resource type="Texture2D" uid="uid://pod71mt5n80g" path="res://src/assets/icons/rewind.png" id="6_70ih8"]
+[ext_resource type="Texture2D" uid="uid://uk5y2jutndfs" path="res://src/assets/icons/play.png" id="8_472sp"]
+[ext_resource type="Texture2D" uid="uid://bwq1356tmf1io" path="res://src/assets/icons/stop.png" id="8_bvw1v"]
+[ext_resource type="Script" path="res://src/ui/node_graph_ui/square_button.gd" id="9_ii1iv"]
+
+[sub_resource type="InputEventAction" id="InputEventAction_w5vlr"]
+action = &"add_node"
+
+[sub_resource type="Shortcut" id="Shortcut_gi8tx"]
+events = [SubResource("InputEventAction_w5vlr")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_3h3ia"]
+action = &"delete"
+
+[sub_resource type="Shortcut" id="Shortcut_vn8x0"]
+events = [SubResource("InputEventAction_3h3ia")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_8r56g"]
+action = &"rename"
+
+[sub_resource type="Shortcut" id="Shortcut_qkre2"]
+events = [SubResource("InputEventAction_8r56g")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_wtp7o"]
+action = &"rewind"
+
+[sub_resource type="Shortcut" id="Shortcut_xqpfn"]
+events = [SubResource("InputEventAction_wtp7o")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_imo20"]
+action = &"play_pause"
+
+[sub_resource type="Shortcut" id="Shortcut_dgr7n"]
+events = [SubResource("InputEventAction_imo20")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_orana"]
+action = &"stop"
+
+[sub_resource type="Shortcut" id="Shortcut_8bhqi"]
+events = [SubResource("InputEventAction_orana")]
+
+[node name="SFXGraphEdit" type="GraphEdit"]
+auto_translate_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+grid_pattern = 1
+panning_scheme = 1
+right_disconnects = true
+minimap_enabled = false
+show_zoom_label = true
+script = ExtResource("1_xycfd")
+metadata/_edit_vertical_guides_ = [-812.0]
+
+[node name="OutputNode" parent="." instance=ExtResource("2_e504x")]
+layout_mode = 0
+offset_left = 100.0
+offset_top = 100.0
+offset_right = 300.0
+offset_bottom = 210.0
+mouse_filter = 1
+position_offset = Vector2(100, 100)
+
+[node name="AddNodeWindow" parent="." instance=ExtResource("2_k7ga3")]
+visible = false
+
+[node name="RenameNodeWindow" parent="." instance=ExtResource("4_n84ql")]
+title = "Rename node"
+visible = false
+button_text = "Add"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MenuHBoxControls" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -281.0
+offset_top = -20.0
+offset_right = 281.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VolumeSlider" type="Range" parent="MenuHBoxControls"]
+_import_path = NodePath("")
+unique_name_in_owner = true
+process_mode = 0
+process_priority = 0
+process_physics_priority = 0
+process_thread_group = 0
+auto_translate_mode = 1
+editor_description = ""
+visible = true
+modulate = Color(1, 1, 1, 1)
+self_modulate = Color(1, 1, 1, 1)
+show_behind_parent = false
+top_level = false
+clip_children = 0
+light_mask = 1
+visibility_layer = 1
+z_index = 0
+z_as_relative = true
+y_sort_enabled = false
+texture_filter = 0
+texture_repeat = 0
+material = null
+use_parent_material = false
+clip_contents = false
+custom_minimum_size = Vector2(115, 36)
+layout_direction = 0
+layout_mode = 2
+size_flags_horizontal = 1
+size_flags_vertical = 1
+size_flags_stretch_ratio = 1.0
+localize_numeral_system = true
+auto_translate = true
+tooltip_text = ""
+focus_neighbor_left = NodePath("")
+focus_neighbor_top = NodePath("")
+focus_neighbor_right = NodePath("")
+focus_neighbor_bottom = NodePath("")
+focus_next = NodePath("")
+focus_previous = NodePath("")
+focus_mode = 0
+mouse_filter = 0
+mouse_force_pass_scroll_events = true
+mouse_default_cursor_shape = 0
+theme = null
+theme_type_variation = &""
+min_value = 0.0
+max_value = 100.0
+step = 1.0
+page = 0.0
+value = 100.0
+exp_edit = false
+rounded = false
+allow_greater = false
+allow_lesser = false
+script = ExtResource("4_i341j")
+prefix = "Volume: "
+slider_visible = false
+
+[node name="AddNodeButton" type="Button" parent="MenuHBoxControls"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+shortcut = SubResource("Shortcut_gi8tx")
+text = "Add node"
+
+[node name="DeleteNodeButton" type="Button" parent="MenuHBoxControls"]
+unique_name_in_owner = true
+auto_translate_mode = 1
+layout_mode = 2
+size_flags_vertical = 3
+disabled = true
+shortcut = SubResource("Shortcut_vn8x0")
+text = "Delete node"
+
+[node name="RenameNodeButton" type="Button" parent="MenuHBoxControls"]
+unique_name_in_owner = true
+auto_translate_mode = 1
+layout_mode = 2
+size_flags_vertical = 3
+disabled = true
+shortcut = SubResource("Shortcut_qkre2")
+text = "Rename node"
+
+[node name="RewindButton" type="Button" parent="MenuHBoxControls"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+disabled = true
+shortcut = SubResource("Shortcut_xqpfn")
+icon = ExtResource("6_70ih8")
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("9_ii1iv")
+
+[node name="PlayPauseButton" type="Button" parent="MenuHBoxControls"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+shortcut = SubResource("Shortcut_dgr7n")
+icon = ExtResource("8_472sp")
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("6_6dob5")
+
+[node name="StopButton" type="Button" parent="MenuHBoxControls"]
+unique_name_in_owner = true
+auto_translate_mode = 1
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+disabled = true
+shortcut = SubResource("Shortcut_8bhqi")
+icon = ExtResource("8_bvw1v")
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("9_ii1iv")
+
+[connection signal="connection_from_empty" from="." to="." method="_on_connection_from_empty"]
+[connection signal="connection_request" from="." to="." method="_on_connection_request"]
+[connection signal="connection_to_empty" from="." to="." method="_on_connection_to_empty"]
+[connection signal="delete_nodes_request" from="." to="." method="_on_delete_nodes_request"]
+[connection signal="disconnection_request" from="." to="." method="_on_disconnection_request"]
+[connection signal="node_deselected" from="." to="." method="_on_node_deselected"]
+[connection signal="node_selected" from="." to="." method="_on_node_selected"]
+[connection signal="pressed" from="MenuHBoxControls/RewindButton" to="." method="_on_rewind_button_pressed"]
+[connection signal="play_pause_changed" from="MenuHBoxControls/PlayPauseButton" to="." method="_on_play_pause_button_play_pause_changed"]
+[connection signal="pressed" from="MenuHBoxControls/PlayPauseButton" to="MenuHBoxControls/PlayPauseButton" method="_on_pressed"]
+[connection signal="resized" from="MenuHBoxControls/PlayPauseButton" to="MenuHBoxControls/PlayPauseButton" method="_on_resized"]
+[connection signal="pressed" from="MenuHBoxControls/StopButton" to="." method="_on_stop_button_pressed"]

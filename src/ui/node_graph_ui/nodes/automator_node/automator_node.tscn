@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://cty1px4el7xoe"]
 
+[ext_resource type="Script" path="res://src/ui/node_graph_ui/nodes/automator_node/automator_node.gd" id="1_5iq3t"]
 [ext_resource type="Script" path="res://src/ui/slider_combo/slider_combo.gd" id="1_h8cks"]
-[ext_resource type="Script" path="res://src/ui/node_graph_ui/nodes/sfx_node.gd" id="1_jt1gu"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_l7w60"]
 
@@ -73,7 +73,7 @@ slot/6/right_type = 0
 slot/6/right_color = Color(1, 1, 1, 1)
 slot/6/right_icon = null
 slot/6/draw_stylebox = true
-script = ExtResource("1_jt1gu")
+script = ExtResource("1_5iq3t")
 type = "Automator"
 
 [node name="OutputOutput" type="Label" parent="."]
