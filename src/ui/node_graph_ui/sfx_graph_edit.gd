@@ -1,6 +1,15 @@
 class_name SFXGraphEdit extends GraphEdit
 
 
+enum ConnectionLineType {
+	CURVE,
+	WIRE,
+	HORIZONTAL_VERTICAL,
+	TRACES,
+	STRAIGHT,
+}
+
+
 signal paused
 signal played
 signal rewound
@@ -11,6 +20,7 @@ signal connection_changed
 var nodes: Dictionary
 @export_dir var nodes_folder = "res://src/ui/node_graph_ui/nodes/"
 @export var player: AudioStreamPlayer
+@export var connection_line_type: ConnectionLineType = ConnectionLineType.CURVE
 
 @onready var internal_hbox: HBoxContainer = get_menu_hbox()
 @onready var add_node_window: AddNodeWindow = $AddNodeWindow
@@ -42,7 +52,7 @@ func _ready() -> void:
 	volume_slider.slider_value_changed.connect(_change_volume)
 	rename_node_button.pressed.connect(_on_rename_node_button_pressed)
 	ui_toggle_button.state_changed.connect(
-			func(state): ui_layer.visible = state
+			func(state): ui_layer.scale = Vector2.ONE if state else Vector2.ZERO
 			)
 	
 	_load_nodes()
@@ -56,10 +66,98 @@ func _process(delta: float) -> void:
 			if child is GraphElement:
 				nodes.append(child.duplicate())
 		thingy = NodeTree.new(self)
-		print("saved")
 	if Input.is_action_just_pressed("load"):
 		thingy.load_tree(self)
-		print("loaded")
+
+
+func _get_connection_line(from_position: Vector2, to_position: Vector2) -> PackedVector2Array:
+	match connection_line_type:
+		ConnectionLineType.CURVE:
+			return _get_connection_line_curve(from_position, to_position)
+		ConnectionLineType.WIRE:
+			return _get_connection_line_wire(from_position, to_position)
+		ConnectionLineType.HORIZONTAL_VERTICAL:
+			return _get_connection_line_hori_vert(from_position, to_position)
+		ConnectionLineType.TRACES:
+			return _get_connection_line_traces(from_position, to_position)
+	return [from_position, to_position]
+
+
+func _get_connection_line_curve(from_position: Vector2, to_position: Vector2) -> PackedVector2Array:
+	var x_diff: float = (to_position.x - from_position.x)
+	var cp_offset: float = abs(x_diff * connection_lines_curvature)
+
+	var curve: Curve2D = Curve2D.new()
+	
+	curve.add_point(from_position);
+	curve.set_point_out(0, Vector2(cp_offset, 0));
+	curve.add_point(to_position);
+	curve.set_point_in(1, Vector2(-cp_offset, 0));
+
+	if connection_lines_curvature > 0:
+		return curve.tessellate(5, 2.0);
+	else:
+		return curve.tessellate(1);
+
+
+func _get_connection_line_wire(from_position: Vector2, to_position: Vector2) -> PackedVector2Array:
+	from_position /= zoom
+	to_position /= zoom
+	if from_position.x > to_position.x:
+		var temp = from_position
+		from_position = to_position
+		to_position = temp
+	
+	var curve: Curve2D = Curve2D.new()
+	var dist = 300.0
+	var drop: float = (dist * dist) / (from_position.distance_to(to_position) + dist)
+	
+	curve.add_point(from_position, Vector2.ZERO, (to_position - from_position) / 2.0 + Vector2(0, drop))
+	curve.add_point(to_position)
+	
+	var points: PackedVector2Array = []
+	for point in curve.tessellate(5, 2):
+		points.append(point * zoom)
+	
+	return points
+
+
+func _get_connection_line_hori_vert(from_position: Vector2, to_position: Vector2) -> PackedVector2Array:
+	var points: PackedVector2Array = []
+	
+	points.append(from_position)
+	points.append(Vector2((from_position.x + to_position.x) / 2.0, from_position.y))
+	points.append(Vector2((from_position.x + to_position.x) / 2.0, to_position.y))
+	points.append(to_position)
+	
+	return points
+
+
+func _get_connection_line_traces(from_position: Vector2, to_position: Vector2) -> PackedVector2Array:
+	var points: PackedVector2Array = []
+	var offset = abs(from_position.y - to_position.y) / 2.0
+	
+	points.append(from_position)
+	
+	points.append(Vector2(clamp((from_position.x + to_position.x) / 2.0 - offset, from_position.x, to_position.x), from_position.y))
+	points.append(Vector2(clamp((from_position.x + to_position.x) / 2.0 + offset, from_position.x, to_position.x), to_position.y))
+	
+	points.append(to_position)
+	
+	return points
+
+
+
+func connect_node(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> Error:
+	var node: GraphNode = get_node(NodePath(to_node))
+	node.get_child(node.get_input_port_slot(to_port)).editable = false
+	return super.connect_node(from_node, from_port, to_node, to_port)
+
+
+func disconnect_node(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:
+	var node: GraphNode = get_node(NodePath(to_node))
+	node.get_child(node.get_input_port_slot(to_port)).editable = true
+	super.disconnect_node(from_node, from_port, to_node, to_port)
 
 
 func _load_nodes(folder: String = nodes_folder) -> void:
@@ -211,15 +309,3 @@ func _on_stop_button_pressed() -> void:
 	play_pause_button.playing = false
 	rewind_button.disabled = true
 	stop_button.disabled = true
-
-
-func connect_node(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> Error:
-	var node: GraphNode = get_node(NodePath(to_node))
-	node.get_child(node.get_input_port_slot(to_port)).editable = false
-	return super.connect_node(from_node, from_port, to_node, to_port)
-
-
-func disconnect_node(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:
-	var node: GraphNode = get_node(NodePath(to_node))
-	node.get_child(node.get_input_port_slot(to_port)).editable = true
-	super.disconnect_node(from_node, from_port, to_node, to_port)

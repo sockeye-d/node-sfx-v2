@@ -64,10 +64,10 @@ size_flags_vertical = 3
 grid_pattern = 1
 panning_scheme = 1
 right_disconnects = true
-connection_lines_curvature = 0.0
 minimap_enabled = false
 show_zoom_label = true
 script = ExtResource("1_xycfd")
+connection_line_type = 1
 metadata/_edit_vertical_guides_ = [-812.0]
 
 [node name="OutputNode" parent="." instance=ExtResource("2_e504x")]

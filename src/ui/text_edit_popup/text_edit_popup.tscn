@@ -16,6 +16,7 @@ transient = true
 exclusive = true
 popup_window = true
 script = ExtResource("1_ltphf")
+button_text = "Add"
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 auto_translate_mode = 1
