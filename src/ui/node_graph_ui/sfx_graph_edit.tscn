@@ -1,15 +1,20 @@
-[gd_scene load_steps=23 format=3 uid="uid://dpkk5woh4logp"]
+[gd_scene load_steps=27 format=3 uid="uid://dpkk5woh4logp"]
 
 [ext_resource type="Script" path="res://src/ui/node_graph_ui/sfx_graph_edit.gd" id="1_xycfd"]
 [ext_resource type="PackedScene" uid="uid://b2a46kobve2bc" path="res://src/ui/node_graph_ui/nodes/output_node.tscn" id="2_e504x"]
 [ext_resource type="PackedScene" uid="uid://h2uba1em2toh" path="res://src/ui/add_node_window/add_node_window.tscn" id="2_k7ga3"]
 [ext_resource type="Script" path="res://src/ui/slider_combo/slider_combo.gd" id="4_i341j"]
 [ext_resource type="PackedScene" uid="uid://c4umntkoaq6qw" path="res://src/ui/text_edit_popup/text_edit_popup.tscn" id="4_n84ql"]
-[ext_resource type="Script" path="res://src/ui/node_graph_ui/play_pause_button.gd" id="6_6dob5"]
+[ext_resource type="Script" path="res://src/ui/node_graph_ui/texture_toggle_button.gd" id="6_6dob5"]
 [ext_resource type="Texture2D" uid="uid://pod71mt5n80g" path="res://src/assets/icons/rewind.png" id="6_70ih8"]
 [ext_resource type="Texture2D" uid="uid://uk5y2jutndfs" path="res://src/assets/icons/play.png" id="8_472sp"]
 [ext_resource type="Texture2D" uid="uid://bwq1356tmf1io" path="res://src/assets/icons/stop.png" id="8_bvw1v"]
 [ext_resource type="Script" path="res://src/ui/node_graph_ui/square_button.gd" id="9_ii1iv"]
+[ext_resource type="Texture2D" uid="uid://cioqhu3y5jekc" path="res://src/assets/icons/pause.png" id="10_y2sef"]
+[ext_resource type="Texture2D" uid="uid://dwnv3vbpsj47h" path="res://src/assets/icons/hide_ui.png" id="11_hf4ix"]
+[ext_resource type="Texture2D" uid="uid://josmkakpx5e8" path="res://src/assets/icons/show_ui.png" id="13_ew5av"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hv8y4"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_w5vlr"]
 action = &"add_node"
@@ -59,6 +64,7 @@ size_flags_vertical = 3
 grid_pattern = 1
 panning_scheme = 1
 right_disconnects = true
+connection_lines_curvature = 0.0
 minimap_enabled = false
 show_zoom_label = true
 script = ExtResource("1_xycfd")
@@ -81,10 +87,28 @@ title = "Rename node"
 visible = false
 button_text = "Add"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="UIToggleButton" type="Button" parent="MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hv8y4")
+icon = ExtResource("11_hf4ix")
+flat = true
+script = ExtResource("6_6dob5")
+true_icon = ExtResource("11_hf4ix")
+false_icon = ExtResource("13_ew5av")
+state = true
 
 [node name="MenuHBoxControls" type="HBoxContainer" parent="."]
 layout_mode = 1
@@ -125,7 +149,7 @@ texture_repeat = 0
 material = null
 use_parent_material = false
 clip_contents = false
-custom_minimum_size = Vector2(115, 36)
+custom_minimum_size = Vector2(115, 44)
 layout_direction = 0
 layout_mode = 2
 size_flags_horizontal = 1
@@ -157,7 +181,6 @@ allow_greater = false
 allow_lesser = false
 script = ExtResource("4_i341j")
 prefix = "Volume: "
-slider_visible = false
 
 [node name="AddNodeButton" type="Button" parent="MenuHBoxControls"]
 unique_name_in_owner = true
@@ -186,7 +209,7 @@ text = "Rename node"
 
 [node name="RewindButton" type="Button" parent="MenuHBoxControls"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(40, 0)
+custom_minimum_size = Vector2(44, 0)
 layout_mode = 2
 disabled = true
 shortcut = SubResource("Shortcut_xqpfn")
@@ -197,18 +220,20 @@ script = ExtResource("9_ii1iv")
 
 [node name="PlayPauseButton" type="Button" parent="MenuHBoxControls"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(40, 0)
+custom_minimum_size = Vector2(44, 0)
 layout_mode = 2
 shortcut = SubResource("Shortcut_dgr7n")
 icon = ExtResource("8_472sp")
 icon_alignment = 1
 expand_icon = true
 script = ExtResource("6_6dob5")
+true_icon = ExtResource("10_y2sef")
+false_icon = ExtResource("8_472sp")
 
 [node name="StopButton" type="Button" parent="MenuHBoxControls"]
 unique_name_in_owner = true
 auto_translate_mode = 1
-custom_minimum_size = Vector2(40, 0)
+custom_minimum_size = Vector2(44, 0)
 layout_mode = 2
 disabled = true
 shortcut = SubResource("Shortcut_8bhqi")
@@ -225,7 +250,5 @@ script = ExtResource("9_ii1iv")
 [connection signal="node_deselected" from="." to="." method="_on_node_deselected"]
 [connection signal="node_selected" from="." to="." method="_on_node_selected"]
 [connection signal="pressed" from="MenuHBoxControls/RewindButton" to="." method="_on_rewind_button_pressed"]
-[connection signal="play_pause_changed" from="MenuHBoxControls/PlayPauseButton" to="." method="_on_play_pause_button_play_pause_changed"]
-[connection signal="pressed" from="MenuHBoxControls/PlayPauseButton" to="MenuHBoxControls/PlayPauseButton" method="_on_pressed"]
-[connection signal="resized" from="MenuHBoxControls/PlayPauseButton" to="MenuHBoxControls/PlayPauseButton" method="_on_resized"]
+[connection signal="state_changed" from="MenuHBoxControls/PlayPauseButton" to="." method="_on_play_pause_button_state_changed"]
 [connection signal="pressed" from="MenuHBoxControls/StopButton" to="." method="_on_stop_button_pressed"]

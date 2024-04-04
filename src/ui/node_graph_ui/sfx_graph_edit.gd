@@ -19,8 +19,13 @@ var nodes: Dictionary
 @onready var rename_node_button: Button = %RenameNodeButton
 @onready var volume_slider: SliderCombo = %VolumeSlider
 @onready var rewind_button: Button = %RewindButton
-@onready var play_pause_button: PlayPauseButton = %PlayPauseButton
+@onready var play_pause_button: TextureToggleButton = %PlayPauseButton
 @onready var stop_button: Button = %StopButton
+@onready var ui_toggle_button: TextureToggleButton = %UIToggleButton
+@onready var ui_layer: Control = $"@Control@2"
+
+
+var thingy: NodeTree
 
 
 var connections: Array[Dictionary]:
@@ -36,8 +41,25 @@ func _ready() -> void:
 	del_node_button.pressed.connect(_on_delete_node_button_pressed)
 	volume_slider.slider_value_changed.connect(_change_volume)
 	rename_node_button.pressed.connect(_on_rename_node_button_pressed)
+	ui_toggle_button.state_changed.connect(
+			func(state): ui_layer.visible = state
+			)
 	
 	_load_nodes()
+	
+
+
+func _process(delta: float) -> void:
+	if Input.is_action_just_pressed("save"):
+		var nodes: Array[GraphElement] = []
+		for child in get_children():
+			if child is GraphElement:
+				nodes.append(child.duplicate())
+		thingy = NodeTree.new(self)
+		print("saved")
+	if Input.is_action_just_pressed("load"):
+		thingy.load_tree(self)
+		print("loaded")
 
 
 func _load_nodes(folder: String = nodes_folder) -> void:
@@ -169,7 +191,7 @@ func _change_volume(new_volume: float) -> void:
 	player.volume_db = linear_to_db(new_volume / 100.0)
 
 
-func _on_play_pause_button_play_pause_changed(playing: bool) -> void:
+func _on_play_pause_button_state_changed(playing: bool) -> void:
 	if playing:
 		played.emit()
 		stop_button.disabled = false
