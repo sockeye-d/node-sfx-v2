@@ -129,6 +129,7 @@ allow_lesser = false
 script = ExtResource("1_4vp67")
 prefix = "Signal: "
 slider_visible = false
+slider_value = 1.0
 
 [node name="QueueSizeInput" type="Range" parent="."]
 _import_path = NodePath("")
@@ -188,6 +189,7 @@ allow_lesser = false
 script = ExtResource("1_4vp67")
 prefix = "Queue size: "
 slider_visible = false
+slider_value = 100.0
 
 [node name="OffsetInput" type="Range" parent="."]
 _import_path = NodePath("")
@@ -214,7 +216,7 @@ texture_repeat = 0
 material = null
 use_parent_material = false
 clip_contents = false
-custom_minimum_size = Vector2(0, 52)
+custom_minimum_size = Vector2(0, 44)
 layout_direction = 0
 layout_mode = 2
 size_flags_horizontal = 1
@@ -246,6 +248,7 @@ allow_greater = true
 allow_lesser = false
 script = ExtResource("1_4vp67")
 prefix = "Y offset: "
+slider_value = 0.5
 
 [node name="ScaleInput" type="Range" parent="."]
 _import_path = NodePath("")
@@ -272,7 +275,7 @@ texture_repeat = 0
 material = null
 use_parent_material = false
 clip_contents = false
-custom_minimum_size = Vector2(0, 52)
+custom_minimum_size = Vector2(0, 44)
 layout_direction = 0
 layout_mode = 2
 size_flags_horizontal = 1
@@ -304,3 +307,4 @@ allow_greater = true
 allow_lesser = false
 script = ExtResource("1_4vp67")
 prefix = "Y scale: "
+slider_value = 0.5

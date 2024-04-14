@@ -252,3 +252,5 @@ allow_greater = true
 allow_lesser = true
 script = ExtResource("1_gxbkf")
 prefix = "Phase: "
+
+[connection signal="item_selected" from="TypeSelector" to="." method="_emit_changed_arg"]

@@ -252,3 +252,5 @@ allow_greater = false
 allow_lesser = false
 script = ExtResource("2_dha2f")
 prefix = "Blend: "
+
+[connection signal="item_selected" from="Filter" to="." method="_emit_changed_arg"]

@@ -4,6 +4,7 @@ class_name SliderCombo extends Range
 
 signal slider_value_changed(v: float)
 signal slider_value_changed_without_set(v: float)
+signal changed_begun()
 
 
 enum DraggingStates {
@@ -26,27 +27,25 @@ enum DraggingStates {
 	set(v):
 		line_edit.editable = v
 		slider.editable = v
+		editable = v
 	get:
-		return line_edit.editable or slider.editable
+		return editable
+
 @export var slider_visible: bool = true:
 	set(v):
-		var reinit = false
-		if not slider_visible == v:
-			reinit = true
-		
+		slider.visible = v
 		slider_visible = v
-		
-		if reinit:
-			_init()
-
-
-var slider_value:
+		_resize()
+	get:
+		return slider_visible
+@export var slider_value: float:
 	set(v):
 		v = _constrain(v)
 		slider.value = v
 		line_edit.text = "%s%.*f" % [prefix, max(ceil(log(1.0 / step) / log(10.0)), 0.0), v]
 		slider_value_changed.emit(v)
 		slider_value = v
+		set_value_no_signal(v)
 	get:
 		return slider_value
 
@@ -56,63 +55,74 @@ var slider: Slider
 var outer_container: PanelContainer
 var margin_container: MarginContainer
 var container: VBoxContainer
+var _old_slider_visible: bool
 
 var dragging_state: DraggingStates = DraggingStates.NONE
 var drag_mouse_pos: Vector2
 
 
 func _init() -> void:
-	for child in get_children():
-		child.queue_free()
-	line_edit = LineEdit.new()
-	line_edit.size_flags_horizontal = Control.SIZE_FILL
-	line_edit.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	line_edit.text_submitted.connect(_on_text_submitted)
-	line_edit.gui_input.connect(_on_line_edit_input)
-	line_edit.flat = true
-	line_edit.context_menu_enabled = false
-	line_edit.caret_blink = true
-	line_edit.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+	if outer_container == null:
+		outer_container = PanelContainer.new()
+		outer_container.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		add_child(outer_container)
+	else:
+		remove_child(outer_container)
+		outer_container = outer_container.duplicate()
+		add_child(outer_container)
 	
-	slider = HSlider.new()
-	slider.value_changed.connect(_on_value_changed)
-	slider_value = value
-	slider.min_value = min_value
-	slider.max_value = max_value
-	slider.step = step
+	if margin_container == null:
+		margin_container = MarginContainer.new()
+		margin_container.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		margin_container.add_theme_constant_override("margin_left",   4)
+		margin_container.add_theme_constant_override("margin_right",  4)
+		margin_container.add_theme_constant_override("margin_top",    4)
+		margin_container.add_theme_constant_override("margin_bottom", 4)
+		outer_container.add_child(margin_container)
 	
-	container = VBoxContainer.new()
-	container.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	container.resized.connect(_resize)
-	container.add_theme_constant_override("separation", 0)
+	if container == null:
+		container = VBoxContainer.new()
+		container.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		container.resized.connect(_resize)
+		container.add_theme_constant_override("separation", 0)
+		
+		margin_container.add_child(container)
 	
-	outer_container = PanelContainer.new()
-	outer_container.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	if line_edit == null:
+		line_edit = LineEdit.new()
+		line_edit.size_flags_horizontal = Control.SIZE_FILL
+		line_edit.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		line_edit.text_submitted.connect(_on_text_submitted)
+		line_edit.gui_input.connect(_on_line_edit_input)
+		line_edit.flat = true
+		line_edit.context_menu_enabled = false
+		line_edit.caret_blink = true
+		line_edit.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
+		container.add_child(line_edit)
 	
-	margin_container = MarginContainer.new()
-	margin_container.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	margin_container.add_theme_constant_override("margin_left",   4)
-	margin_container.add_theme_constant_override("margin_right",  4)
-	margin_container.add_theme_constant_override("margin_top",    4)
-	margin_container.add_theme_constant_override("margin_bottom", 4)
-	
-	self.add_child(outer_container)
-	outer_container.add_child(margin_container)
-	margin_container.add_child(container)
-	container.add_child(line_edit)
-	
-	if slider_visible:
+	if slider == null:
+		slider = HSlider.new()
+		slider.value_changed.connect(_on_value_changed)
+		slider.drag_started.connect(func(): changed_begun.emit())
+		slider.min_value = min_value
+		slider.max_value = max_value
+		slider.step = step
 		container.add_child(slider)
 	
 	if not value_changed.is_connected(_on_value_changed):
 		value_changed.connect(_on_value_changed)
-
-
-func _ready() -> void:
+	
+	if not changed.is_connected(_on_changed):
+		changed.connect(_on_changed)
+	
 	slider_value = value
 
 
-func _process(_delta: float) -> void:
+func _ready() -> void:
+	line_edit.text = "%s%.*f" % [prefix, max(ceil(log(1.0 / step) / log(10.0)), 0.0), slider_value]
+
+
+func _on_changed() -> void:
 	slider.min_value = min_value
 	slider.max_value = max_value
 	slider.step = step
@@ -123,9 +133,9 @@ func _on_text_submitted(new_text: String) -> void:
 	
 	val = _constrain(val)
 	
-	slider_value = val
-	
 	line_edit.release_focus()
+	changed_begun.emit()
+	slider_value = val
 
 
 func _on_line_edit_focus_exited() -> void:
@@ -134,6 +144,7 @@ func _on_line_edit_focus_exited() -> void:
 	val = _constrain(val)
 	
 	slider_value = val
+	changed_begun.emit()
 
 
 func _on_value_changed(v: float) -> void:
@@ -166,6 +177,7 @@ func _on_line_edit_input(event: InputEvent) -> void:
 				drag_mouse_pos = e.global_position
 				Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 				line_edit.editable = false
+				changed_begun.emit()
 			
 			if dragging_state == DraggingStates.DRAGGING:
 				slider_value += e.relative.x * mouse_drag_scale * (max_value - min_value)

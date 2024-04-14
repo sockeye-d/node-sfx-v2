@@ -14,6 +14,7 @@ initial_position = 5
 size = Vector2i(300, 100)
 transient = true
 exclusive = true
+unresizable = true
 popup_window = true
 script = ExtResource("1_ltphf")
 button_text = "Add"
@@ -74,3 +75,5 @@ layout_mode = 2
 size_flags_horizontal = 3
 shortcut = SubResource("Shortcut_cwm6s")
 text = "Cancel"
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]

@@ -35,7 +35,8 @@ var nodes: Dictionary
 @onready var ui_layer: Control = $"@Control@2"
 
 
-var thingy: NodeTree
+var undo_ptr: int = 0
+var undo_stack: Array[NodeTree]
 
 
 var connections: Array[Dictionary]:
@@ -60,14 +61,8 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	if Input.is_action_just_pressed("save"):
-		var nodes: Array[GraphElement] = []
-		for child in get_children():
-			if child is GraphElement:
-				nodes.append(child.duplicate())
-		thingy = NodeTree.new(self)
-	if Input.is_action_just_pressed("load"):
-		thingy.load_tree(self)
+	if Input.is_action_just_pressed("undo"):
+		pop_undo_frame()
 
 
 func _get_connection_line(from_position: Vector2, to_position: Vector2) -> PackedVector2Array:
@@ -147,6 +142,41 @@ func _get_connection_line_traces(from_position: Vector2, to_position: Vector2) -
 	return points
 
 
+func get_selected_nodes() -> Array[GraphNode]:
+	var nodes: Array[GraphNode] = []
+	for child in get_children():
+		if child is GraphNode:
+			if child.selected:
+				nodes.append(child)
+	return nodes
+
+
+func push_undo_frame() -> void:
+	undo_stack.push_back(NodeTree.new(self))
+	_print_nodes()
+
+
+func pop_undo_frame() -> void:
+	if undo_stack.size() > 0:
+		print("undo frame popped")
+		_print_nodes()
+		undo_stack.pop_back().load_tree(self)
+		_print_nodes()
+		connection_changed.emit()
+
+
+#func redo() -> void:
+	#undo_ptr += 1
+	#pop_undo_frame()
+
+
+func add_node(child: Node, push_undo_frame: bool = true) -> void:
+	if push_undo_frame:
+		push_undo_frame()
+	if child is SFXNode:
+		child.changed.connect(func(): push_undo_frame())
+	add_child(child)
+
 
 func connect_node(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> Error:
 	var node: GraphNode = get_node(NodePath(to_node))
@@ -182,7 +212,7 @@ func _add_node(new_node_offset: Vector2 = (scroll_offset + size / 2.0) / zoom) -
 	var node: GraphNode = nodes[selected.to_lower()].instantiate()
 	node.position_offset = new_node_offset
 	
-	add_child(node, true)
+	add_node(node, true)
 	
 	return node
 
@@ -191,6 +221,8 @@ func _on_connection_request(from_node: StringName, from_port: int, to_node: Stri
 	for con in get_connection_list():
 		if con.to_node == to_node and con.to_port == to_port:
 			self.disconnect_node(con.from_node, con.from_port, con.to_node, con.to_port)
+	
+	push_undo_frame()
 	self.connect_node(from_node, from_port, to_node, to_port)
 	connection_changed.emit()
 
@@ -200,17 +232,22 @@ func _on_connection_to_empty(from_node: StringName, from_port: int, release_posi
 	
 	if node == null:
 		return
+	
+	push_undo_frame()
+	
 	if node.get_input_port_count() > 0:
 		self.connect_node(from_node, from_port, node.name, 0)
 		connection_changed.emit()
 
 
 func _on_disconnection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:
+	push_undo_frame()
 	self.disconnect_node(from_node, from_port, to_node, to_port)
 	connection_changed.emit()
 
 
 func _on_delete_nodes_request(nodes: Array[StringName]) -> void:
+	push_undo_frame()
 	var disconnections: Array[Dictionary] = []
 	var connections = get_connection_list()
 	for node in nodes:
@@ -281,6 +318,8 @@ func _on_connection_from_empty(to_node: StringName, to_port: int, release_positi
 	if node == null:
 		return
 	
+	push_undo_frame()
+	
 	self.connect_node(node.name, 0, to_node, to_port)
 	connection_changed.emit()
 
@@ -302,10 +341,31 @@ func _on_play_pause_button_state_changed(playing: bool) -> void:
 
 func _on_rewind_button_pressed() -> void:
 	rewound.emit()
+	connection_changed.emit()
 
 
 func _on_stop_button_pressed() -> void:
 	stopped.emit()
-	play_pause_button.playing = false
+	play_pause_button.state = false
 	rewind_button.disabled = true
 	stop_button.disabled = true
+
+
+func _on_begin_node_move() -> void:
+	push_undo_frame()
+
+
+func _on_duplicate_nodes_request() -> void:
+	var selected_nodes = get_selected_nodes()
+	
+	for node in selected_nodes:
+		add_node(node.duplicate())
+
+
+func _print_nodes() -> void:
+	for child in get_children():
+		if child is SFXNode:
+			print(child.title)
+			for control in child.get_children():
+				if control is SliderCombo:
+					print("\t%s = %s" % [control.name, control.slider_value])

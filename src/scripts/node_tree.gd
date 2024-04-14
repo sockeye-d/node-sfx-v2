@@ -18,39 +18,37 @@ class Connection:
 		to_port = _to_port
 
 
-var nodes: Array[GraphElement]
-var connections: Array[Connection]
+var nodes: Array[GraphElement] = []
+var connections: Array[Connection] = []
 
 
-func _init(graph_edit: GraphEdit) -> void:
-	nodes = []
-	connections = []
+func _init(graph_edit: SFXGraphEdit) -> void:
 	var name_map: Dictionary = {}
 	for child in graph_edit.get_children():
 		if child is GraphElement:
 			var new_child = child.duplicate()
-			name_map[StringName(new_child.name)] = new_child
+			name_map[new_child.name] = new_child
 			nodes.append(new_child)
 	
 	for connection in graph_edit.get_connection_list():
 		connections.append(Connection.new(
-				name_map[connection.from_node],
+				name_map[connection["from_node"]],
 				connection.from_port,
-				name_map[connection].to_node,
+				name_map[connection["to_node"]],
 				connection.to_port
 				))
 
 
-func load_tree(graph_edit: GraphEdit) -> void:
+func load_tree(graph_edit: SFXGraphEdit) -> void:
+	graph_edit.clear_connections()
 	for child in graph_edit.get_children():
 		if child is GraphElement:
 			graph_edit.remove_child(child)
+			#if not child in nodes:
+				#child.queue_free()
 	
 	for node in nodes:
-		if node.get_parent() == null:
-			graph_edit.add_child(node)
-		else:
-			node.reparent(graph_edit)
+		graph_edit.add_node(node, false)
 	
 	for connection in connections:
 		graph_edit.connect_node(connection.from_node.name, connection.from_port, connection.to_node.name, connection.to_port)

@@ -1,8 +1,5 @@
 @tool
-class_name AutomatorNode extends GraphNode
-
-
-@export var type: String = self.title
+class_name AutomatorNode extends SFXNode
 
 
 @onready var handle_container: Panel = %HandleContainer
@@ -98,3 +95,5 @@ func _update_points() -> void:
 	line_display.points = points
 	line_display.add_point(Vector2(0, points[0].y), 0)
 	line_display.add_point(Vector2(handle_container.size.x, points[-1].y))
+	
+	_emit_changed()

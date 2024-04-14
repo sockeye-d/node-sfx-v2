@@ -62,3 +62,8 @@ func _on_add_button_pressed() -> void:
 func _on_cancel_button_pressed() -> void:
 	text_submitted.emit("")
 	hide()
+
+
+func _on_visibility_changed() -> void:
+	if visible and line_edit:
+		line_edit.grab_focus()

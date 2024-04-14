@@ -128,6 +128,7 @@ public partial class Main : Control
     {
         _nodeTree?.Dispose();
         _nodeTree = _ConstructNodeTree(_ConvertGodotConnections(NodeGraph.GetConnectionList()), "OutputNode");
+        GD.Print("Refreshed tree");
     }
 
     private void _Pause()

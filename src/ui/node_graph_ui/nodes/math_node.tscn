@@ -131,7 +131,7 @@ texture_repeat = 0
 material = null
 use_parent_material = false
 clip_contents = false
-custom_minimum_size = Vector2(0, 52)
+custom_minimum_size = Vector2(0, 44)
 layout_direction = 0
 layout_mode = 2
 size_flags_horizontal = 1
@@ -189,7 +189,7 @@ texture_repeat = 0
 material = null
 use_parent_material = false
 clip_contents = false
-custom_minimum_size = Vector2(0, 52)
+custom_minimum_size = Vector2(0, 44)
 layout_direction = 0
 layout_mode = 2
 size_flags_horizontal = 1
@@ -221,3 +221,5 @@ allow_greater = true
 allow_lesser = true
 script = ExtResource("1_tgyhk")
 prefix = "B: "
+
+[connection signal="button_down" from="TypeSelector" to="." method="_emit_changed"]
