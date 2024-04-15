@@ -136,6 +136,7 @@ allow_greater = true
 allow_lesser = false
 script = ExtResource("1_gxbkf")
 prefix = "Frequency: "
+slider_value = 440.0
 
 [node name="AmplitudeInput" type="Range" parent="."]
 _import_path = NodePath("")
@@ -194,6 +195,7 @@ allow_greater = true
 allow_lesser = true
 script = ExtResource("1_gxbkf")
 prefix = "Amplitude: "
+slider_value = 1.0
 
 [node name="PhaseInput" type="Range" parent="."]
 _import_path = NodePath("")
@@ -253,4 +255,4 @@ allow_lesser = true
 script = ExtResource("1_gxbkf")
 prefix = "Phase: "
 
-[connection signal="item_selected" from="TypeSelector" to="." method="_emit_changed_arg"]
+[connection signal="button_down" from="TypeSelector" to="." method="_emit_changed"]

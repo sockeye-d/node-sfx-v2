@@ -1,0 +1,12 @@
+[gd_resource type="FontVariation" load_steps=2 format=3 uid="uid://dtypnuyrn3hpo"]
+
+[ext_resource type="FontFile" uid="uid://byixppdafphgl" path="res://src/assets/fonts/Montserrat/Montserrat-VariableFont_wght.ttf" id="1_vighw"]
+
+[resource]
+base_font = ExtResource("1_vighw")
+variation_opentype = {
+2003265652: 500
+}
+opentype_features = {
+1936928817: 0
+}

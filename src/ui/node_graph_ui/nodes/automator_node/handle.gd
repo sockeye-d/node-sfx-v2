@@ -1,6 +1,10 @@
 class_name Handle extends Control
 
 
+static var panel_stylebox: StyleBox = load("res://src/ui/node_graph_ui/nodes/automator_node/handle_panel.stylebox")
+static var button_focus_stylebox: StyleBox = load("res://src/ui/node_graph_ui/nodes/automator_node/button_focus.stylebox")
+
+
 signal pressed
 signal moved(new_position: Vector2)
 
@@ -26,6 +30,32 @@ const MOUSE_DRAG_NONE = Vector2(-1, -1)
 
 var old_position: Vector2
 var mouse_drag_position: Vector2 = MOUSE_DRAG_NONE
+
+
+func _init() -> void:
+	for child in get_children():
+		child.queue_free()
+	
+	set_anchors_preset(Control.PRESET_CENTER)
+	modulate = Color.WHITE
+	
+	var panel: Panel = Panel.new()
+	panel.add_theme_stylebox_override(&"panel", panel_stylebox)
+	panel.set_anchors_preset(Control.PRESET_CENTER)
+	panel.size = Vector2(10.0, 10.0)
+	panel.position = panel.size / -2.0
+	
+	var button: Button = Button.new()
+	button.add_theme_stylebox_override(&"focus", button_focus_stylebox)
+	button.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	button.flat = true
+	button.button_down.connect(_on_button_button_down)
+	button.button_up.connect(_on_button_button_up)
+	button.mouse_entered.connect(_on_button_mouse_entered)
+	button.mouse_exited.connect(_on_button_mouse_exited)
+	
+	add_child(panel)
+	panel.add_child(button)
 
 
 func _process(_delta: float) -> void:

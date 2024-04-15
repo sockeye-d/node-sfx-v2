@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://cty1px4el7xoe"]
+[gd_scene load_steps=5 format=3 uid="uid://cty1px4el7xoe"]
 
 [ext_resource type="Script" path="res://src/ui/node_graph_ui/nodes/automator_node/automator_node.gd" id="1_5iq3t"]
 [ext_resource type="Script" path="res://src/ui/slider_combo/slider_combo.gd" id="1_h8cks"]
+[ext_resource type="PackedScene" uid="uid://df6hx38kf4sos" path="res://src/ui/node_graph_ui/nodes/automator_node/handle.tscn" id="2_ho755"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_l7w60"]
 
@@ -96,9 +97,13 @@ size_flags_vertical = 3
 
 [node name="LineDisplay" type="Line2D" parent="Interface/VBoxContainer/HandleContainer"]
 unique_name_in_owner = true
+points = PackedVector2Array(94, 52)
 width = 3.0
 default_color = Color(0.241156, 0.241156, 0.241156, 1)
 joint_mode = 2
+
+[node name="Handle" parent="Interface/VBoxContainer/HandleContainer" instance=ExtResource("2_ho755")]
+layout_mode = 1
 
 [node name="ButtonContainer" type="HBoxContainer" parent="Interface/VBoxContainer"]
 layout_mode = 2
@@ -145,7 +150,7 @@ texture_repeat = 0
 material = null
 use_parent_material = false
 clip_contents = false
-custom_minimum_size = Vector2(0, 44)
+custom_minimum_size = Vector2(0, 45)
 layout_direction = 0
 layout_mode = 2
 size_flags_horizontal = 3
@@ -204,7 +209,7 @@ texture_repeat = 0
 material = null
 use_parent_material = false
 clip_contents = false
-custom_minimum_size = Vector2(0, 44)
+custom_minimum_size = Vector2(0, 45)
 layout_direction = 0
 layout_mode = 2
 size_flags_horizontal = 3
@@ -263,7 +268,7 @@ texture_repeat = 0
 material = null
 use_parent_material = false
 clip_contents = false
-custom_minimum_size = Vector2(0, 36)
+custom_minimum_size = Vector2(0, 37)
 layout_direction = 0
 layout_mode = 2
 size_flags_horizontal = 1
@@ -322,7 +327,7 @@ texture_repeat = 0
 material = null
 use_parent_material = false
 clip_contents = false
-custom_minimum_size = Vector2(0, 44)
+custom_minimum_size = Vector2(0, 45)
 layout_direction = 0
 layout_mode = 2
 size_flags_horizontal = 1
@@ -354,6 +359,7 @@ allow_greater = true
 allow_lesser = true
 script = ExtResource("1_h8cks")
 prefix = "From min: "
+slider_value = -1.0
 
 [node name="FromMaxInput" type="Range" parent="."]
 _import_path = NodePath("")
@@ -380,7 +386,7 @@ texture_repeat = 0
 material = null
 use_parent_material = false
 clip_contents = false
-custom_minimum_size = Vector2(0, 44)
+custom_minimum_size = Vector2(0, 45)
 layout_direction = 0
 layout_mode = 2
 size_flags_horizontal = 1
@@ -412,6 +418,7 @@ allow_greater = true
 allow_lesser = true
 script = ExtResource("1_h8cks")
 prefix = "From max: "
+slider_value = 1.0
 
 [node name="ToMinInput" type="Range" parent="."]
 _import_path = NodePath("")
@@ -438,7 +445,7 @@ texture_repeat = 0
 material = null
 use_parent_material = false
 clip_contents = false
-custom_minimum_size = Vector2(0, 44)
+custom_minimum_size = Vector2(0, 45)
 layout_direction = 0
 layout_mode = 2
 size_flags_horizontal = 1
@@ -496,7 +503,7 @@ texture_repeat = 0
 material = null
 use_parent_material = false
 clip_contents = false
-custom_minimum_size = Vector2(0, 44)
+custom_minimum_size = Vector2(0, 45)
 layout_direction = 0
 layout_mode = 2
 size_flags_horizontal = 1
@@ -528,8 +535,11 @@ allow_greater = true
 allow_lesser = true
 script = ExtResource("1_h8cks")
 prefix = "To max: "
+slider_value = 1.0
 
 [connection signal="pressed" from="Interface/VBoxContainer/ButtonContainer/AddButton" to="." method="_on_add_button_pressed"]
 [connection signal="pressed" from="Interface/VBoxContainer/ButtonContainer/RemoveButton" to="." method="_on_remove_button_pressed"]
+[connection signal="changed_begun" from="Interface/VBoxContainer/SliderContainer/XSlider" to="." method="_emit_changed"]
 [connection signal="slider_value_changed_without_set" from="Interface/VBoxContainer/SliderContainer/XSlider" to="." method="_on_x_slider_slider_value_changed"]
+[connection signal="changed_begun" from="Interface/VBoxContainer/SliderContainer/YSlider" to="." method="_emit_changed"]
 [connection signal="slider_value_changed_without_set" from="Interface/VBoxContainer/SliderContainer/YSlider" to="." method="_on_y_slider_slider_value_changed"]

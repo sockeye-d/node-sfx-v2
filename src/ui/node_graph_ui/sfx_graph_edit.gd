@@ -134,8 +134,9 @@ func _get_connection_line_traces(from_position: Vector2, to_position: Vector2) -
 	
 	points.append(from_position)
 	
-	points.append(Vector2(clamp((from_position.x + to_position.x) / 2.0 - offset, from_position.x, to_position.x), from_position.y))
-	points.append(Vector2(clamp((from_position.x + to_position.x) / 2.0 + offset, from_position.x, to_position.x), to_position.y))
+	if (from_position.x + to_position.x) / 2.0 - offset > from_position.x:
+		points.append(Vector2((from_position.x + to_position.x) / 2.0 - offset, from_position.y))
+		points.append(Vector2((from_position.x + to_position.x) / 2.0 + offset, to_position.y))
 	
 	points.append(to_position)
 	
@@ -153,7 +154,7 @@ func get_selected_nodes() -> Array[GraphNode]:
 
 func push_undo_frame() -> void:
 	undo_stack.push_back(NodeTree.new(self))
-	_print_nodes()
+	#_print_nodes()
 
 
 func pop_undo_frame() -> void:
@@ -360,6 +361,7 @@ func _on_duplicate_nodes_request() -> void:
 	
 	for node in selected_nodes:
 		add_node(node.duplicate())
+		node.selected = false
 
 
 func _print_nodes() -> void:

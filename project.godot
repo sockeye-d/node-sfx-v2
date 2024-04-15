@@ -18,6 +18,7 @@ config/icon="res://src/assets/icons/icon.png"
 [debug]
 
 gdscript/warnings/native_method_override=1
+gdscript/warnings/onready_with_export=1
 
 [display]
 
