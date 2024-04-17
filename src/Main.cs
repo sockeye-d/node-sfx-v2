@@ -1,7 +1,7 @@
 using Godot;
+using NodeSfx.Nodes;
 using SfxNode = NodeSfx.Nodes.Node;
 using GdDictionary = Godot.Collections.Dictionary;
-using NodeSfx.Nodes;
 using System;
 
 public partial class Main : Control
@@ -21,7 +21,7 @@ public partial class Main : Control
             ToPort = toPort;
         }
 
-        public Connection(Godot.Collections.Dictionary connection)
+        public Connection(GdDictionary connection)
         {
             FromNode = (StringName)connection["from_node"];
             FromPort = (int)connection["from_port"];
@@ -79,55 +79,10 @@ public partial class Main : Control
         }
     }
 
-    private Connection[] _ConvertGodotConnections(Godot.Collections.Array<GdDictionary> connections)
-    {
-        Connection[] newConnections = new Connection[connections.Count];
-        for (int i = 0; i < connections.Count; i++)
-        {
-            newConnections[i] = new Connection(connections[i]);
-        }
-
-        return newConnections;
-    }
-
-    private SfxNode _GetSfxNodeFromGraphNode(GraphNode node)
-    {
-        string type = node.Get("type").AsString();
-        return type switch
-        {
-            "Output" => new OutputNode(node, node.Name),
-            "Oscillator" => new OscillatorNode(node, node.Name),
-            "Oscilloscope" => new OscilloscopeNode(node, node.Name),
-            "Time" => new TimeNode(node, node.Name),
-            "Automator" => new AutomatorNode(node, node.Name),
-            "Display" => new DisplayNode(node, node.Name),
-            "Math" => new MathNode(node, node.Name),
-            "Exponential low pass" => new ExponentialLowPassNode(node, node.Name),
-            "Mix" => new MixNode(node, node.Name),
-            "Convolutional low pass" => new ConvolutionalLowPassNode(node, node.Name),
-            _ => null,
-        };
-    }
-
-    private SfxNode _ConstructNodeTree(Connection[] connections, string root)
-    {
-        GraphNode node = NodeGraph.GetNode<GraphNode>(root);
-        SfxNode rootNode = _GetSfxNodeFromGraphNode(node);
-        foreach (Connection connection in connections)
-        {
-            if (connection.ToNode == root)
-            {
-                rootNode.Connect(connection.ToPort, _ConstructNodeTree(connections, connection.FromNode));
-            }
-        }
-
-        return rootNode;
-    }
-
     private void _RefreshTree()
     {
         _nodeTree?.Dispose();
-        _nodeTree = _ConstructNodeTree(_ConvertGodotConnections(NodeGraph.GetConnectionList()), "OutputNode");
+        _nodeTree = _ConstructNodeTree(NodeGraph, _ConvertGodotConnections(NodeGraph.GetConnectionList()), _FindGraphNode(NodeGraph, "Output").Name);
         GD.Print("Refreshed tree");
     }
 
@@ -152,5 +107,65 @@ public partial class Main : Control
     private void _Rewind()
     {
         _time = 0.0;
+    }
+
+    private static Godot.Node _FindGraphNode(GraphEdit nodeGraph, string type)
+    {
+        foreach (Godot.Node child in nodeGraph.GetChildren())
+        {
+            if (child.Get("type").AsString() == type)
+            {
+                return child;
+            }
+        }
+
+        return null;
+    }
+
+    private static Connection[] _ConvertGodotConnections(Godot.Collections.Array<GdDictionary> connections)
+    {
+        Connection[] newConnections = new Connection[connections.Count];
+        for (int i = 0; i < connections.Count; i++)
+        {
+            newConnections[i] = new Connection(connections[i]);
+        }
+
+        return newConnections;
+    }
+
+    private static SfxNode _GetSfxNodeFromGraphNode(GraphNode node)
+    {
+        string type = node.Get("type").AsString();
+        return type switch
+        {
+            "Output" => new OutputNode(node, node.Name),
+            "Oscillator" => new OscillatorNode(node, node.Name),
+            "Oscilloscope" => new OscilloscopeNode(node, node.Name),
+            "Time" => new TimeNode(node, node.Name),
+            "Automator" => new AutomatorNode(node, node.Name),
+            "Display" => new DisplayNode(node, node.Name),
+            "Math" => new MathNode(node, node.Name),
+            "Exponential low pass" => new ExponentialLowPassNode(node, node.Name),
+            "Mix" => new MixNode(node, node.Name),
+            "Convolutional low pass" => new ConvolutionalLowPassNode(node, node.Name),
+            "Loop" => new LoopNode(node, node.Name),
+            "Loop input" => new LoopInputNode(node, node.Name),
+            _ => null,
+        };
+    }
+
+    private static SfxNode _ConstructNodeTree(GraphEdit nodeGraph, Connection[] connections, string root)
+    {
+        GraphNode node = nodeGraph.GetNode<GraphNode>(root);
+        SfxNode rootNode = _GetSfxNodeFromGraphNode(node);
+        foreach (Connection connection in connections)
+        {
+            if (connection.ToNode == root)
+            {
+                rootNode.Connect(connection.ToPort, _ConstructNodeTree(nodeGraph, connections, connection.FromNode));
+            }
+        }
+
+        return rootNode;
     }
 }

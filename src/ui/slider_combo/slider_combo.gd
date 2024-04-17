@@ -4,7 +4,7 @@ class_name SliderCombo extends Range
 
 signal slider_value_changed(v: float)
 signal slider_value_changed_without_set(v: float)
-signal changed_begun()
+signal changed_begun
 
 
 enum DraggingStates {

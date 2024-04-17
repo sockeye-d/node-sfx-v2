@@ -12,6 +12,7 @@ func _ready() -> void:
 	for child in get_children():
 		if child is SliderCombo:
 			child.changed_begun.connect(_emit_changed)
+			child.set_meta("is_slider_combo", true)
 
 
 func _emit_changed() -> void:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://h2uba1em2toh"]
+[gd_scene load_steps=26 format=3 uid="uid://h2uba1em2toh"]
 
 [ext_resource type="Script" path="res://src/ui/add_node_window/add_node_window.gd" id="1_2vlg5"]
 [ext_resource type="Script" path="res://src/ui/add_node_window/node_item.gd" id="2_ymasl"]
@@ -63,6 +63,26 @@ script = ExtResource("2_ymasl")
 name = "Filter"
 children = Array[ExtResource("2_ymasl")]([SubResource("Resource_vd7lo")])
 
+[sub_resource type="Resource" id="Resource_ssmdf"]
+script = ExtResource("2_ymasl")
+name = "Loop"
+children = Array[ExtResource("2_ymasl")]([])
+
+[sub_resource type="Resource" id="Resource_llucf"]
+script = ExtResource("2_ymasl")
+name = "Loop input"
+children = Array[ExtResource("2_ymasl")]([])
+
+[sub_resource type="Resource" id="Resource_eo3wm"]
+script = ExtResource("2_ymasl")
+name = "Loops"
+children = Array[ExtResource("2_ymasl")]([SubResource("Resource_ssmdf"), SubResource("Resource_llucf")])
+
+[sub_resource type="Resource" id="Resource_qrkey"]
+script = ExtResource("2_ymasl")
+name = "Special"
+children = Array[ExtResource("2_ymasl")]([SubResource("Resource_eo3wm")])
+
 [sub_resource type="Resource" id="Resource_tp4do"]
 script = ExtResource("2_ymasl")
 name = "Oscilloscope"
@@ -81,7 +101,7 @@ children = Array[ExtResource("2_ymasl")]([SubResource("Resource_tp4do"), SubReso
 [sub_resource type="Resource" id="Resource_7yvyo"]
 script = ExtResource("2_ymasl")
 name = "root"
-children = Array[ExtResource("2_ymasl")]([SubResource("Resource_yelw7"), SubResource("Resource_uujhu"), SubResource("Resource_i6ii3"), SubResource("Resource_tee1t"), SubResource("Resource_6ojmt")])
+children = Array[ExtResource("2_ymasl")]([SubResource("Resource_yelw7"), SubResource("Resource_uujhu"), SubResource("Resource_i6ii3"), SubResource("Resource_tee1t"), SubResource("Resource_qrkey"), SubResource("Resource_6ojmt")])
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mr3ur"]
 content_margin_left = 4.0

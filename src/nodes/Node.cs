@@ -114,9 +114,9 @@ namespace NodeSfx.Nodes
 
             foreach (Godot.Node child in Source.GetChildren())
             {
-                if (child.Name.ToString().Contains("Input"))
+                if (child.HasMeta("is_slider_combo"))
                 {
-                    args.Add((double)child.Get("slider_value"));
+                    args.Add(child.Get("slider_value").AsDouble());
                 }
             }
 

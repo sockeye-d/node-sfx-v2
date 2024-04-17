@@ -148,7 +148,7 @@ texture_repeat = 0
 material = null
 use_parent_material = false
 clip_contents = false
-custom_minimum_size = Vector2(115, 45)
+custom_minimum_size = Vector2(115, 44)
 layout_direction = 0
 layout_mode = 2
 size_flags_horizontal = 1
@@ -209,7 +209,7 @@ text = "Rename node"
 
 [node name="RewindButton" type="Button" parent="MenuHBoxControls"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(45, 0)
+custom_minimum_size = Vector2(44, 0)
 layout_mode = 2
 disabled = true
 shortcut = SubResource("Shortcut_xqpfn")
@@ -220,7 +220,7 @@ script = ExtResource("9_ii1iv")
 
 [node name="PlayPauseButton" type="Button" parent="MenuHBoxControls"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(45, 0)
+custom_minimum_size = Vector2(44, 0)
 layout_mode = 2
 shortcut = SubResource("Shortcut_dgr7n")
 icon = ExtResource("8_472sp")
@@ -233,7 +233,7 @@ false_icon = ExtResource("8_472sp")
 [node name="StopButton" type="Button" parent="MenuHBoxControls"]
 unique_name_in_owner = true
 auto_translate_mode = 1
-custom_minimum_size = Vector2(45, 0)
+custom_minimum_size = Vector2(44, 0)
 layout_mode = 2
 disabled = true
 shortcut = SubResource("Shortcut_8bhqi")

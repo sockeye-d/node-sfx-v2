@@ -27,14 +27,14 @@ func _init(graph_edit: SFXGraphEdit) -> void:
 	for child in graph_edit.get_children():
 		if child is GraphElement:
 			var new_child = child.duplicate()
-			name_map[new_child.name] = new_child
+			name_map[new_child.name.replace("@", "_")] = new_child
 			nodes.append(new_child)
 	
 	for connection in graph_edit.get_connection_list():
 		connections.append(Connection.new(
-				name_map[connection["from_node"]],
+				name_map[connection["from_node"].replace("@", "_")],
 				connection.from_port,
-				name_map[connection["to_node"]],
+				name_map[connection["to_node"].replace("@", "_")],
 				connection.to_port
 				))
 

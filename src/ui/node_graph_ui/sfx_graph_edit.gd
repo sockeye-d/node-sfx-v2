@@ -181,13 +181,17 @@ func add_node(child: Node, push_undo_frame: bool = true) -> void:
 
 func connect_node(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> Error:
 	var node: GraphNode = get_node(NodePath(to_node))
-	node.get_child(node.get_input_port_slot(to_port)).editable = false
+	var input = node.get_child(node.get_input_port_slot(to_port))
+	if input is SliderCombo:
+		input.editable = false
 	return super.connect_node(from_node, from_port, to_node, to_port)
 
 
 func disconnect_node(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:
 	var node: GraphNode = get_node(NodePath(to_node))
-	node.get_child(node.get_input_port_slot(to_port)).editable = true
+	var input = node.get_child(node.get_input_port_slot(to_port))
+	if input is SliderCombo:
+		input.editable = true
 	super.disconnect_node(from_node, from_port, to_node, to_port)
 
 
