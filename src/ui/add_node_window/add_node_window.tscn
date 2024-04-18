@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://h2uba1em2toh"]
+[gd_scene load_steps=28 format=3 uid="uid://h2uba1em2toh"]
 
 [ext_resource type="Script" path="res://src/ui/add_node_window/add_node_window.gd" id="1_2vlg5"]
 [ext_resource type="Script" path="res://src/ui/add_node_window/node_item.gd" id="2_ymasl"]
@@ -109,6 +109,10 @@ content_margin_top = 4.0
 content_margin_right = 4.0
 content_margin_bottom = 4.0
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7g35e"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2r3ls"]
+
 [sub_resource type="InputEventAction" id="InputEventAction_uslob"]
 action = &"cancel"
 
@@ -135,17 +139,71 @@ grow_vertical = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
 layout_mode = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer"]
+[node name="SearchBox" type="LineEdit" parent="PanelContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_neighbor_bottom = NodePath("../Control/ListScrollContainer/ItemsList")
+placeholder_text = "Search..."
+
+[node name="Control" type="Control" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ItemsTree" type="Tree" parent="PanelContainer/VBoxContainer/ScrollContainer"]
+[node name="TreeScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer/Control"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+
+[node name="ItemsTree" type="Tree" parent="PanelContainer/VBoxContainer/Control/TreeScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_constants/draw_guides = 1
+theme_override_constants/v_separation = 4
 theme_override_styles/panel = SubResource("StyleBoxEmpty_mr3ur")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_7g35e")
+allow_search = false
 hide_root = true
+scroll_horizontal_enabled = false
+scroll_vertical_enabled = false
+
+[node name="ListScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer/Control"]
+unique_name_in_owner = true
+auto_translate_mode = 1
+visible = false
+layout_mode = 2
+offset_top = 4.0
+offset_right = 300.0
+offset_bottom = 426.0
+size_flags_vertical = 3
+
+[node name="ItemsList" type="ItemList" parent="PanelContainer/VBoxContainer/Control/ListScrollContainer"]
+unique_name_in_owner = true
+auto_translate_mode = 1
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/v_separation = 6
+theme_override_styles/focus = SubResource("StyleBoxEmpty_2r3ls")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_mr3ur")
+item_count = 11
+item_0/text = "Time"
+item_1/text = "Oscillator"
+item_2/text = "Automator"
+item_3/text = "Math"
+item_4/text = "Mix"
+item_5/text = "Exponential low pass"
+item_6/text = "Convolutional low pass"
+item_7/text = "Loop"
+item_8/text = "Loop input"
+item_9/text = "Oscilloscope"
+item_10/text = "Display"
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
@@ -172,8 +230,15 @@ size_flags_horizontal = 3
 shortcut = SubResource("Shortcut_7n1sx")
 text = "Cancel"
 
+[connection signal="about_to_popup" from="." to="." method="_on_about_to_popup"]
 [connection signal="close_requested" from="." to="." method="_on_close_requested"]
-[connection signal="item_activated" from="PanelContainer/VBoxContainer/ScrollContainer/ItemsTree" to="." method="_on_items_tree_item_activated"]
-[connection signal="item_selected" from="PanelContainer/VBoxContainer/ScrollContainer/ItemsTree" to="." method="_on_items_tree_item_selected"]
+[connection signal="gui_input" from="PanelContainer/VBoxContainer/SearchBox" to="." method="_on_search_box_gui_input"]
+[connection signal="text_changed" from="PanelContainer/VBoxContainer/SearchBox" to="." method="_on_search_box_text_changed"]
+[connection signal="text_submitted" from="PanelContainer/VBoxContainer/SearchBox" to="." method="_on_search_box_text_submitted"]
+[connection signal="item_activated" from="PanelContainer/VBoxContainer/Control/TreeScrollContainer/ItemsTree" to="." method="_on_items_tree_item_activated"]
+[connection signal="item_collapsed" from="PanelContainer/VBoxContainer/Control/TreeScrollContainer/ItemsTree" to="." method="_on_items_tree_item_collapsed"]
+[connection signal="item_selected" from="PanelContainer/VBoxContainer/Control/TreeScrollContainer/ItemsTree" to="." method="_on_items_tree_item_selected"]
+[connection signal="item_activated" from="PanelContainer/VBoxContainer/Control/ListScrollContainer/ItemsList" to="." method="_on_items_list_item_activated"]
+[connection signal="item_selected" from="PanelContainer/VBoxContainer/Control/ListScrollContainer/ItemsList" to="." method="_on_items_list_item_selected"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/AddButton" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/CancelButton" to="." method="_on_close_requested"]

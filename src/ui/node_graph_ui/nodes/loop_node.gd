@@ -47,15 +47,31 @@ func _create_input():
 
 func _on_add_input_button_pressed() -> void:
 	_emit_changed()
-	_create_input()
+	_create_input.call_deferred()
 
 
 func delete_input(container: Node) -> void:
 	_emit_changed()
-	#var index = container.get_index()
-	#for i in range(index, get_child_count()):
-		#pass
+	
+	# Get all the incoming connections *before* disconnecting them temporarily
+	var incoming_connections: Array[Dictionary] = get_input_connections()
+	var port_disconnected = get_input_slot_port(container.get_index())
+	for port in range(port_disconnected, get_input_port_count()):
+		disconnect_requested.emit(port)
+	
+	for connection in incoming_connections:
+		if connection.to_port > port_disconnected:
+			connection_requested.emit(
+					connection.from_node,
+					connection.from_port,
+					connection.to_node,
+					connection.to_port - 1,
+					)
+	
+	
+	remove_child(container)
 	container.queue_free()
+	(func(): size.y = 0.0).call_deferred()
 
 
 func _on_line_edit_text_changed(line_edit: LineEdit, timer: Timer) -> void:

@@ -176,6 +176,12 @@ func add_node(child: Node, push_undo_frame: bool = true) -> void:
 		push_undo_frame()
 	if child is SFXNode:
 		child.changed.connect(func(): push_undo_frame())
+		child.connection_requested.connect(
+				func(from_node, from_port, to_node, to_port):
+					connect_node(from_node, from_port, to_node, to_port)
+					)
+		child.disconnect_requested.connect(func(port): _on_node_disconnect_request(port, child))
+		child.graph_edit = self
 	add_child(child)
 
 
@@ -209,7 +215,7 @@ func _load_nodes(folder: String = nodes_folder) -> void:
 
 
 func _add_node(new_node_offset: Vector2 = (scroll_offset + size / 2.0) / zoom) -> GraphNode:
-	add_node_window.show()
+	add_node_window.popup()
 	var selected: String = await add_node_window.item_selected_or_canceled
 	
 	if selected == "":
@@ -366,6 +372,12 @@ func _on_duplicate_nodes_request() -> void:
 	for node in selected_nodes:
 		add_node(node.duplicate())
 		node.selected = false
+
+
+func _on_node_disconnect_request(port: int, node: SFXNode) -> void:
+	for connection in connections:
+		if connection.to_node == node.name:
+			disconnect_node(connection.from_node, connection.from_port, node.name, port)
 
 
 func _print_nodes() -> void:
