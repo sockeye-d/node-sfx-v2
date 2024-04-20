@@ -14,7 +14,7 @@ namespace NodeSfx.Nodes
             {
                 return _sampleRate;
             }
-            
+
             set
             {
                 _sampleRate = value;
@@ -60,7 +60,7 @@ namespace NodeSfx.Nodes
         {
             Source = source;
             Name = name;
-            ConnectedNodes = new ();
+            ConnectedNodes = new();
         }
 
         public void Connect(int port, Node node)
@@ -106,6 +106,7 @@ namespace NodeSfx.Nodes
             {
                 node.Dispose();
             }
+            GC.SuppressFinalize(this);
         }
 
         public void UpdateNodeArguments()

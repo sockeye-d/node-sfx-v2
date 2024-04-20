@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://h2uba1em2toh"]
+[gd_scene load_steps=31 format=3 uid="uid://h2uba1em2toh"]
 
 [ext_resource type="Script" path="res://src/ui/add_node_window/add_node_window.gd" id="1_2vlg5"]
 [ext_resource type="Script" path="res://src/ui/add_node_window/node_item.gd" id="2_ymasl"]
@@ -6,102 +6,130 @@
 [sub_resource type="Resource" id="Resource_f71j8"]
 script = ExtResource("2_ymasl")
 name = "Time"
+description = "Outputs the current time in the node tree"
 children = Array[ExtResource("2_ymasl")]([])
 
 [sub_resource type="Resource" id="Resource_yelw7"]
 script = ExtResource("2_ymasl")
 name = "Input"
+description = null
 children = Array[ExtResource("2_ymasl")]([SubResource("Resource_f71j8")])
 
 [sub_resource type="Resource" id="Resource_vo10f"]
 script = ExtResource("2_ymasl")
 name = "Oscillator"
+description = "Generates a waveform. Supports properly varying frequencies with other nodes"
 children = Array[ExtResource("2_ymasl")]([])
 
 [sub_resource type="Resource" id="Resource_uujhu"]
 script = ExtResource("2_ymasl")
 name = "Generator"
+description = ""
 children = Array[ExtResource("2_ymasl")]([SubResource("Resource_vo10f")])
 
 [sub_resource type="Resource" id="Resource_vyfyb"]
 script = ExtResource("2_ymasl")
 name = "Automator"
+description = "Remaps values with a graphical interface. Used for generating complex envelopes"
 children = Array[ExtResource("2_ymasl")]([])
 
 [sub_resource type="Resource" id="Resource_6qdbb"]
 script = ExtResource("2_ymasl")
 name = "Math"
+description = "Applies a math operation to the inputs"
 children = Array[ExtResource("2_ymasl")]([])
 
 [sub_resource type="Resource" id="Resource_n2x62"]
 script = ExtResource("2_ymasl")
 name = "Mix"
+description = "Mixes two signals with the formula a + (b - a) * t"
 children = Array[ExtResource("2_ymasl")]([])
 
 [sub_resource type="Resource" id="Resource_i6ii3"]
 script = ExtResource("2_ymasl")
 name = "Modifier"
+description = null
 children = Array[ExtResource("2_ymasl")]([SubResource("Resource_vyfyb"), SubResource("Resource_6qdbb"), SubResource("Resource_n2x62")])
 
 [sub_resource type="Resource" id="Resource_5uflc"]
 script = ExtResource("2_ymasl")
 name = "Exponential low pass"
+description = "Applies an exponential decay to a signal. Decay time might change depending on project sample rate"
 children = Array[ExtResource("2_ymasl")]([])
 
 [sub_resource type="Resource" id="Resource_aq18e"]
 script = ExtResource("2_ymasl")
 name = "Convolutional low pass"
+description = "Applies a convolution to a signal with a variety of kernels. [b][color=red]VERY SLOW[/color][/b] so use sparingly"
 children = Array[ExtResource("2_ymasl")]([])
 
 [sub_resource type="Resource" id="Resource_vd7lo"]
 script = ExtResource("2_ymasl")
 name = "Low-pass"
+description = null
 children = Array[ExtResource("2_ymasl")]([SubResource("Resource_5uflc"), SubResource("Resource_aq18e")])
 
 [sub_resource type="Resource" id="Resource_tee1t"]
 script = ExtResource("2_ymasl")
 name = "Filter"
+description = null
 children = Array[ExtResource("2_ymasl")]([SubResource("Resource_vd7lo")])
 
 [sub_resource type="Resource" id="Resource_ssmdf"]
 script = ExtResource("2_ymasl")
 name = "Loop"
+description = "Applies operations to values repeatedly. Used with [i]Loop input[/i] nodes"
 children = Array[ExtResource("2_ymasl")]([])
 
 [sub_resource type="Resource" id="Resource_llucf"]
 script = ExtResource("2_ymasl")
 name = "Loop input"
+description = "Outputs the value of the previous iteration's loop variable's value. Used with [i]Loop[/i] nodes"
 children = Array[ExtResource("2_ymasl")]([])
 
 [sub_resource type="Resource" id="Resource_eo3wm"]
 script = ExtResource("2_ymasl")
 name = "Loops"
+description = null
 children = Array[ExtResource("2_ymasl")]([SubResource("Resource_ssmdf"), SubResource("Resource_llucf")])
+
+[sub_resource type="Resource" id="Resource_k2u25"]
+script = ExtResource("2_ymasl")
+name = "Audio"
+description = "Imports an audio file"
+children = Array[ExtResource("2_ymasl")]([])
 
 [sub_resource type="Resource" id="Resource_qrkey"]
 script = ExtResource("2_ymasl")
 name = "Special"
-children = Array[ExtResource("2_ymasl")]([SubResource("Resource_eo3wm")])
+description = null
+children = Array[ExtResource("2_ymasl")]([SubResource("Resource_eo3wm"), SubResource("Resource_k2u25")])
 
 [sub_resource type="Resource" id="Resource_tp4do"]
 script = ExtResource("2_ymasl")
 name = "Oscilloscope"
+description = "Visualizes a waveform on an oscilloscope"
 children = Array[ExtResource("2_ymasl")]([])
 
 [sub_resource type="Resource" id="Resource_m6jx8"]
 script = ExtResource("2_ymasl")
 name = "Display"
+description = "Displays a number in [color=green]big green text[/color] with a specified number of decimal places. Very useful for debugging"
 children = Array[ExtResource("2_ymasl")]([])
 
 [sub_resource type="Resource" id="Resource_6ojmt"]
 script = ExtResource("2_ymasl")
 name = "Visual"
+description = null
 children = Array[ExtResource("2_ymasl")]([SubResource("Resource_tp4do"), SubResource("Resource_m6jx8")])
 
 [sub_resource type="Resource" id="Resource_7yvyo"]
 script = ExtResource("2_ymasl")
 name = "root"
+description = null
 children = Array[ExtResource("2_ymasl")]([SubResource("Resource_yelw7"), SubResource("Resource_uujhu"), SubResource("Resource_i6ii3"), SubResource("Resource_tee1t"), SubResource("Resource_qrkey"), SubResource("Resource_6ojmt")])
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hfciq"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mr3ur"]
 content_margin_left = 4.0
@@ -112,6 +140,8 @@ content_margin_bottom = 4.0
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7g35e"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2r3ls"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_n5ie7"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_uslob"]
 action = &"cancel"
@@ -138,33 +168,37 @@ grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
 layout_mode = 2
+theme_override_constants/separation = 0
 
 [node name="SearchBox" type="LineEdit" parent="PanelContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-focus_neighbor_bottom = NodePath("../Control/ListScrollContainer/ItemsList")
+focus_neighbor_bottom = NodePath("../Container/ItemsScrollContainer/Control/ItemsList")
 placeholder_text = "Search..."
 
-[node name="Control" type="Control" parent="PanelContainer/VBoxContainer"]
+[node name="Container" type="SplitContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+vertical = true
+
+[node name="ItemsScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer/Container"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="TreeScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer/Control"]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Control" type="PanelContainer" parent="PanelContainer/VBoxContainer/Container/ItemsScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_hfciq")
 
-[node name="ItemsTree" type="Tree" parent="PanelContainer/VBoxContainer/Control/TreeScrollContainer"]
+[node name="ItemsTree" type="Tree" parent="PanelContainer/VBoxContainer/Container/ItemsScrollContainer/Control"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/draw_guides = 1
+theme_override_constants/draw_guides = 0
+theme_override_constants/draw_relationship_lines = 0
 theme_override_constants/v_separation = 4
 theme_override_styles/panel = SubResource("StyleBoxEmpty_mr3ur")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_7g35e")
@@ -173,25 +207,18 @@ hide_root = true
 scroll_horizontal_enabled = false
 scroll_vertical_enabled = false
 
-[node name="ListScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer/Control"]
+[node name="ItemsList" type="ItemList" parent="PanelContainer/VBoxContainer/Container/ItemsScrollContainer/Control"]
 unique_name_in_owner = true
 auto_translate_mode = 1
 visible = false
 layout_mode = 2
-offset_top = 4.0
-offset_right = 300.0
-offset_bottom = 426.0
-size_flags_vertical = 3
-
-[node name="ItemsList" type="ItemList" parent="PanelContainer/VBoxContainer/Control/ListScrollContainer"]
-unique_name_in_owner = true
-auto_translate_mode = 1
-layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_colors/guide_color = Color(0, 0, 0, 0)
 theme_override_constants/v_separation = 6
+theme_override_font_sizes/font_size = 0
 theme_override_styles/focus = SubResource("StyleBoxEmpty_2r3ls")
-theme_override_styles/panel = SubResource("StyleBoxEmpty_mr3ur")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_n5ie7")
 item_count = 11
 item_0/text = "Time"
 item_1/text = "Oscillator"
@@ -204,6 +231,37 @@ item_7/text = "Loop"
 item_8/text = "Loop input"
 item_9/text = "Oscilloscope"
 item_10/text = "Display"
+
+[node name="DescriptionContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer/Container"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/VBoxContainer/Container/DescriptionContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer/Container/DescriptionContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer/Container/DescriptionContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="DescriptionLabel" type="RichTextLabel" parent="PanelContainer/VBoxContainer/Container/DescriptionContainer/PanelContainer/MarginContainer/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+focus_mode = 2
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+shortcut_keys_enabled = false
+selection_enabled = true
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
@@ -235,10 +293,12 @@ text = "Cancel"
 [connection signal="gui_input" from="PanelContainer/VBoxContainer/SearchBox" to="." method="_on_search_box_gui_input"]
 [connection signal="text_changed" from="PanelContainer/VBoxContainer/SearchBox" to="." method="_on_search_box_text_changed"]
 [connection signal="text_submitted" from="PanelContainer/VBoxContainer/SearchBox" to="." method="_on_search_box_text_submitted"]
-[connection signal="item_activated" from="PanelContainer/VBoxContainer/Control/TreeScrollContainer/ItemsTree" to="." method="_on_items_tree_item_activated"]
-[connection signal="item_collapsed" from="PanelContainer/VBoxContainer/Control/TreeScrollContainer/ItemsTree" to="." method="_on_items_tree_item_collapsed"]
-[connection signal="item_selected" from="PanelContainer/VBoxContainer/Control/TreeScrollContainer/ItemsTree" to="." method="_on_items_tree_item_selected"]
-[connection signal="item_activated" from="PanelContainer/VBoxContainer/Control/ListScrollContainer/ItemsList" to="." method="_on_items_list_item_activated"]
-[connection signal="item_selected" from="PanelContainer/VBoxContainer/Control/ListScrollContainer/ItemsList" to="." method="_on_items_list_item_selected"]
+[connection signal="empty_clicked" from="PanelContainer/VBoxContainer/Container/ItemsScrollContainer/Control/ItemsTree" to="." method="_on_items_tree_empty_clicked"]
+[connection signal="item_activated" from="PanelContainer/VBoxContainer/Container/ItemsScrollContainer/Control/ItemsTree" to="." method="_on_items_tree_item_activated"]
+[connection signal="item_collapsed" from="PanelContainer/VBoxContainer/Container/ItemsScrollContainer/Control/ItemsTree" to="." method="_on_items_tree_item_collapsed"]
+[connection signal="item_selected" from="PanelContainer/VBoxContainer/Container/ItemsScrollContainer/Control/ItemsTree" to="." method="_on_items_tree_item_selected"]
+[connection signal="empty_clicked" from="PanelContainer/VBoxContainer/Container/ItemsScrollContainer/Control/ItemsList" to="." method="_on_items_list_empty_clicked"]
+[connection signal="item_activated" from="PanelContainer/VBoxContainer/Container/ItemsScrollContainer/Control/ItemsList" to="." method="_on_items_list_item_activated"]
+[connection signal="item_selected" from="PanelContainer/VBoxContainer/Container/ItemsScrollContainer/Control/ItemsList" to="." method="_on_items_list_item_selected"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/AddButton" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/CancelButton" to="." method="_on_close_requested"]

@@ -1,7 +1,33 @@
-[gd_scene load_steps=3 format=3 uid="uid://di8fwerb2o6us"]
+[gd_scene load_steps=29 format=3 uid="uid://di8fwerb2o6us"]
 
 [ext_resource type="Script" path="res://src/ui/node_graph_ui/nodes/sfx_node.gd" id="1_2j7c6"]
 [ext_resource type="Script" path="res://src/ui/slider_combo/slider_combo.gd" id="1_tgyhk"]
+[ext_resource type="Texture2D" uid="uid://bprpxa4rnptdt" path="res://src/assets/icons/math_add.png" id="2_kfod5"]
+[ext_resource type="Texture2D" uid="uid://b5yr5q02m0fd" path="res://src/assets/icons/math_mult.png" id="3_3o1fk"]
+[ext_resource type="Script" path="res://src/ui/custom/custom_option_button.gd" id="3_hm65x"]
+[ext_resource type="Texture2D" uid="uid://cwxe8pj03lmjb" path="res://src/assets/icons/math_sub.png" id="4_m01ic"]
+[ext_resource type="Texture2D" uid="uid://b4jwqi30pil8c" path="res://src/assets/icons/math_div.png" id="5_n80js"]
+[ext_resource type="Texture2D" uid="uid://ci5cu8itahddl" path="res://src/assets/icons/math_pow.png" id="6_rqqma"]
+[ext_resource type="Texture2D" uid="uid://bq5guq6l3r35q" path="res://src/assets/icons/math_abs.png" id="7_run7m"]
+[ext_resource type="Texture2D" uid="uid://jwflglhdriwc" path="res://src/assets/icons/math_sin.png" id="8_bp2wq"]
+[ext_resource type="Texture2D" uid="uid://f4y0u5x2ckyt" path="res://src/assets/icons/math_cos.png" id="9_ifwst"]
+[ext_resource type="Texture2D" uid="uid://cet3ls4eledyp" path="res://src/assets/icons/math_tan.png" id="10_8bjlt"]
+[ext_resource type="Texture2D" uid="uid://cu3kqmgr5fxe1" path="res://src/assets/icons/math_asin.png" id="11_ub26d"]
+[ext_resource type="Texture2D" uid="uid://cp1kve0h1fxi8" path="res://src/assets/icons/math_acos.png" id="12_ru6ly"]
+[ext_resource type="Texture2D" uid="uid://b2r20dh2op0fn" path="res://src/assets/icons/math_atan.png" id="13_c70mr"]
+[ext_resource type="Texture2D" uid="uid://dm8d2drbobhtv" path="res://src/assets/icons/math_atan2.png" id="14_7uyue"]
+[ext_resource type="Texture2D" uid="uid://dbj2eki6elf2g" path="res://src/assets/icons/math_log.png" id="15_2yp75"]
+[ext_resource type="Texture2D" uid="uid://l4xtakpurp84" path="res://src/assets/icons/math_sqrt.png" id="16_6a57t"]
+[ext_resource type="Texture2D" uid="uid://bt5i0p22f0u3b" path="res://src/assets/icons/math_min.png" id="17_i854f"]
+[ext_resource type="Texture2D" uid="uid://dupn3vfova4q" path="res://src/assets/icons/math_max.png" id="18_4nb0n"]
+[ext_resource type="Texture2D" uid="uid://cy3u64jvdj3j3" path="res://src/assets/icons/math_less_than.png" id="19_t7son"]
+[ext_resource type="Texture2D" uid="uid://5lhklprhasd6" path="res://src/assets/icons/math_greater_than.png" id="20_lm1jh"]
+[ext_resource type="Texture2D" uid="uid://dsd1xpv6yumkh" path="res://src/assets/icons/math_sign.png" id="21_tk04t"]
+[ext_resource type="Texture2D" uid="uid://baiuk1x1h8lu7" path="res://src/assets/icons/math_round.png" id="22_pyqia"]
+[ext_resource type="Texture2D" uid="uid://d1io2w42i0pu8" path="res://src/assets/icons/math_floor.png" id="23_c17ka"]
+[ext_resource type="Texture2D" uid="uid://d37rlvvg5ud7p" path="res://src/assets/icons/math_ceil.png" id="24_tm5gf"]
+[ext_resource type="Texture2D" uid="uid://b68i1ewbcqupe" path="res://src/assets/icons/math_fract.png" id="25_w6s8a"]
+[ext_resource type="Texture2D" uid="uid://cde1e8if70jq5" path="res://src/assets/icons/math_mod.png" id="26_jw73j"]
 
 [node name="MathNode" type="GraphNode"]
 custom_minimum_size = Vector2(200, 0)
@@ -51,60 +77,88 @@ text = "Output"
 horizontal_alignment = 2
 
 [node name="TypeSelector" type="OptionButton" parent="."]
+texture_filter = 2
 layout_mode = 2
 flat = true
+icon_alignment = 2
 selected = 0
 item_count = 25
 popup/item_0/text = "Add"
+popup/item_0/icon = ExtResource("2_kfod5")
 popup/item_0/id = 0
 popup/item_1/text = "Multiply"
+popup/item_1/icon = ExtResource("3_3o1fk")
 popup/item_1/id = 1
 popup/item_2/text = "Subtract"
+popup/item_2/icon = ExtResource("4_m01ic")
 popup/item_2/id = 2
 popup/item_3/text = "Divide"
+popup/item_3/icon = ExtResource("5_n80js")
 popup/item_3/id = 3
 popup/item_4/text = "Power"
+popup/item_4/icon = ExtResource("6_rqqma")
 popup/item_4/id = 4
 popup/item_5/text = "Absolute"
+popup/item_5/icon = ExtResource("7_run7m")
 popup/item_5/id = 24
 popup/item_6/text = "Sine"
+popup/item_6/icon = ExtResource("8_bp2wq")
 popup/item_6/id = 5
 popup/item_7/text = "Cosine"
+popup/item_7/icon = ExtResource("9_ifwst")
 popup/item_7/id = 6
 popup/item_8/text = "Tangent"
+popup/item_8/icon = ExtResource("10_8bjlt")
 popup/item_8/id = 7
 popup/item_9/text = "Sine⁻¹"
+popup/item_9/icon = ExtResource("11_ub26d")
 popup/item_9/id = 8
 popup/item_10/text = "Cosine⁻¹"
+popup/item_10/icon = ExtResource("12_ru6ly")
 popup/item_10/id = 9
 popup/item_11/text = "Tangent⁻¹"
+popup/item_11/icon = ExtResource("13_c70mr")
 popup/item_11/id = 10
 popup/item_12/text = "Tangent⁻¹2"
+popup/item_12/icon = ExtResource("14_7uyue")
 popup/item_12/id = 11
 popup/item_13/text = "Logarithm"
+popup/item_13/icon = ExtResource("15_2yp75")
 popup/item_13/id = 12
 popup/item_14/text = "Square root"
+popup/item_14/icon = ExtResource("16_6a57t")
 popup/item_14/id = 13
 popup/item_15/text = "Minimum"
+popup/item_15/icon = ExtResource("17_i854f")
 popup/item_15/id = 14
 popup/item_16/text = "Maximum"
+popup/item_16/icon = ExtResource("18_4nb0n")
 popup/item_16/id = 15
 popup/item_17/text = "Less than"
+popup/item_17/icon = ExtResource("19_t7son")
 popup/item_17/id = 16
 popup/item_18/text = "Greater than"
+popup/item_18/icon = ExtResource("20_lm1jh")
 popup/item_18/id = 17
 popup/item_19/text = "Sign"
+popup/item_19/icon = ExtResource("21_tk04t")
 popup/item_19/id = 18
 popup/item_20/text = "Round"
+popup/item_20/icon = ExtResource("22_pyqia")
 popup/item_20/id = 19
 popup/item_21/text = "Floor"
+popup/item_21/icon = ExtResource("23_c17ka")
 popup/item_21/id = 20
 popup/item_22/text = "Ceiling"
+popup/item_22/icon = ExtResource("24_tm5gf")
 popup/item_22/id = 21
 popup/item_23/text = "Fraction"
+popup/item_23/icon = ExtResource("25_w6s8a")
 popup/item_23/id = 22
 popup/item_24/text = "Modulo"
+popup/item_24/icon = ExtResource("26_jw73j")
 popup/item_24/id = 23
+script = ExtResource("3_hm65x")
 
 [node name="AInput" type="Range" parent="."]
 _import_path = NodePath("")
@@ -131,7 +185,7 @@ texture_repeat = 0
 material = null
 use_parent_material = false
 clip_contents = false
-custom_minimum_size = Vector2(0, 44)
+custom_minimum_size = Vector2(0, 45)
 layout_direction = 0
 layout_mode = 2
 size_flags_horizontal = 1
@@ -163,6 +217,7 @@ allow_greater = true
 allow_lesser = true
 script = ExtResource("1_tgyhk")
 prefix = "A: "
+metadata/is_slider_combo = true
 
 [node name="BInput" type="Range" parent="."]
 _import_path = NodePath("")
@@ -189,7 +244,7 @@ texture_repeat = 0
 material = null
 use_parent_material = false
 clip_contents = false
-custom_minimum_size = Vector2(0, 44)
+custom_minimum_size = Vector2(0, 45)
 layout_direction = 0
 layout_mode = 2
 size_flags_horizontal = 1
@@ -221,5 +276,6 @@ allow_greater = true
 allow_lesser = true
 script = ExtResource("1_tgyhk")
 prefix = "B: "
+metadata/is_slider_combo = true
 
 [connection signal="button_down" from="TypeSelector" to="." method="_emit_changed"]

@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://bkds8euhc4kea"]
+[gd_scene load_steps=4 format=3 uid="uid://bkds8euhc4kea"]
 
 [ext_resource type="Script" path="res://src/ui/slider_combo/slider_combo.gd" id="1_4vp67"]
 [ext_resource type="Script" path="res://src/ui/node_graph_ui/nodes/oscilloscope_node.gd" id="1_vtr1h"]
+[ext_resource type="Script" path="res://src/ui/custom/custom_option_button.gd" id="2_u7kfr"]
 
 [node name="OscilloscopeNode" type="GraphNode"]
 custom_minimum_size = Vector2(200, 0)
@@ -24,7 +25,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
-slot/2/left_enabled = true
+slot/2/left_enabled = false
 slot/2/left_type = 0
 slot/2/left_color = Color(1, 1, 1, 1)
 slot/2/left_icon = null
@@ -33,7 +34,7 @@ slot/2/right_type = 0
 slot/2/right_color = Color(1, 1, 1, 1)
 slot/2/right_icon = null
 slot/2/draw_stylebox = true
-slot/3/left_enabled = false
+slot/3/left_enabled = true
 slot/3/left_type = 0
 slot/3/left_color = Color(1, 1, 1, 1)
 slot/3/left_icon = null
@@ -42,7 +43,7 @@ slot/3/right_type = 0
 slot/3/right_color = Color(1, 1, 1, 1)
 slot/3/right_icon = null
 slot/3/draw_stylebox = true
-slot/4/left_enabled = false
+slot/4/left_enabled = true
 slot/4/left_type = 0
 slot/4/left_color = Color(1, 1, 1, 1)
 slot/4/left_icon = null
@@ -51,7 +52,7 @@ slot/4/right_type = 0
 slot/4/right_color = Color(1, 1, 1, 1)
 slot/4/right_icon = null
 slot/4/draw_stylebox = true
-slot/5/left_enabled = false
+slot/5/left_enabled = true
 slot/5/left_type = 0
 slot/5/left_color = Color(1, 1, 1, 1)
 slot/5/left_icon = null
@@ -60,7 +61,17 @@ slot/5/right_type = 0
 slot/5/right_color = Color(1, 1, 1, 1)
 slot/5/right_icon = null
 slot/5/draw_stylebox = true
+slot/6/left_enabled = true
+slot/6/left_type = 0
+slot/6/left_color = Color(1, 1, 1, 1)
+slot/6/left_icon = null
+slot/6/right_enabled = false
+slot/6/right_type = 0
+slot/6/right_color = Color(1, 1, 1, 1)
+slot/6/right_icon = null
+slot/6/draw_stylebox = true
 script = ExtResource("1_vtr1h")
+type = "Oscilloscope"
 
 [node name="OutputOutput" type="Label" parent="."]
 layout_mode = 2
@@ -70,6 +81,25 @@ horizontal_alignment = 2
 [node name="Surface" type="Panel" parent="."]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
+
+[node name="ChannelSelector" type="OptionButton" parent="."]
+layout_mode = 2
+flat = true
+selected = 0
+item_count = 6
+popup/item_0/text = "Channel 0"
+popup/item_0/id = 0
+popup/item_1/text = "Channel 1"
+popup/item_1/id = 1
+popup/item_2/text = "Average"
+popup/item_2/id = 2
+popup/item_3/text = "Minimum"
+popup/item_3/id = 3
+popup/item_4/text = "Maximum"
+popup/item_4/id = 4
+popup/item_5/text = "Both"
+popup/item_5/id = 5
+script = ExtResource("2_u7kfr")
 
 [node name="SignalInput" type="Range" parent="."]
 _import_path = NodePath("")
