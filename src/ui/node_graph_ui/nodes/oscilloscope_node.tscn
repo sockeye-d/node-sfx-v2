@@ -97,7 +97,7 @@ popup/item_3/text = "Minimum"
 popup/item_3/id = 3
 popup/item_4/text = "Maximum"
 popup/item_4/id = 4
-popup/item_5/text = "Both"
+popup/item_5/text = "Combined"
 popup/item_5/id = 5
 script = ExtResource("2_u7kfr")
 

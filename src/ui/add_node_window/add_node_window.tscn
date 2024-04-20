@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://h2uba1em2toh"]
+[gd_scene load_steps=33 format=3 uid="uid://h2uba1em2toh"]
 
 [ext_resource type="Script" path="res://src/ui/add_node_window/add_node_window.gd" id="1_2vlg5"]
 [ext_resource type="Script" path="res://src/ui/add_node_window/node_item.gd" id="2_ymasl"]
@@ -99,11 +99,23 @@ name = "Audio"
 description = "Imports an audio file"
 children = Array[ExtResource("2_ymasl")]([])
 
+[sub_resource type="Resource" id="Resource_uk3wo"]
+script = ExtResource("2_ymasl")
+name = "Combine"
+description = "Combines two signals into one. Change which channel the inputs come from with the dropdown menu"
+children = Array[ExtResource("2_ymasl")]([])
+
+[sub_resource type="Resource" id="Resource_1lawo"]
+script = ExtResource("2_ymasl")
+name = "Separate"
+description = "Outputs the given channel of the input. Often used with the [i]Combine[/i] node to perform different operations on the different components."
+children = Array[ExtResource("2_ymasl")]([])
+
 [sub_resource type="Resource" id="Resource_qrkey"]
 script = ExtResource("2_ymasl")
 name = "Special"
 description = null
-children = Array[ExtResource("2_ymasl")]([SubResource("Resource_eo3wm"), SubResource("Resource_k2u25")])
+children = Array[ExtResource("2_ymasl")]([SubResource("Resource_eo3wm"), SubResource("Resource_k2u25"), SubResource("Resource_uk3wo"), SubResource("Resource_1lawo")])
 
 [sub_resource type="Resource" id="Resource_tp4do"]
 script = ExtResource("2_ymasl")

@@ -22,48 +22,50 @@ namespace NodeSfx.Nodes
             INOUT,
         }
 
-        private static readonly Dictionary<Filter, Func<double, double>> _filterFuncs = new()
+        private static readonly Dictionary<Filter, Func<float, float>> _filterFuncs = new()
         {
-            [Filter.CONSTANT] = x => 1.0,
-            [Filter.BELL] = x => -64.0 * (3.0 * (Math.Pow(x, 4) + Math.Pow(x, 5)) + Math.Pow(x, 3) + Math.Pow(x, 6)),
-            [Filter.TRIANGLE] = x => 1.0 - Math.Abs(2.0 * x - 1.0),
-            [Filter.LINEAR_POSITIVE] = x => x + 1.0,
+            [Filter.CONSTANT] = x => 1.0f,
+            [Filter.BELL] = x => -64.0f * (3.0f * (MathF.Pow(x, 4) + MathF.Pow(x, 5)) + MathF.Pow(x, 3) + MathF.Pow(x, 6)),
+            [Filter.TRIANGLE] = x => 1.0f - MathF.Abs(2.0f * x - 1.0f),
+            [Filter.LINEAR_POSITIVE] = x => x + 1.0f,
             [Filter.LINEAR_NEGATIVE] = x => -x,
         };
 
         private Filter _filter;
-        private readonly Queue<float> _data = new();
+        private readonly Queue<Vector2> _data = new();
         private int _queueLength = 0;
         public ConvolutionalLowPassNode(GraphNode source, string name) : base(source, name)
         {
 
         }
 
-        protected override double Calculate(double[] args)
+        protected override Vector2 Calculate(Vector2[] args)
         {
-            _queueLength = (int)(args[1] * SampleRate);
-            _data.Enqueue((float)args[0]);
+            _queueLength = (int)(args[1].X * SampleRate);
+            _data.Enqueue(args[0]);
 
             while (_data.Count > _queueLength)
             {
                 _data.Dequeue();
             }
 
-            IEnumerator<float> enumerator = _data.GetEnumerator();
+            IEnumerator<Vector2> enumerator = _data.GetEnumerator();
 
-            double total = 0.0;
-            double max = 0.0;
+            float totalX = 0.0f;
+            float totalY = 0.0f;
+            float max = 0.0f;
             int i = 0;
 
             while (enumerator.MoveNext())
             {
-                double weight = _filterFuncs[_filter]((double)i / _data.Count - 1.0);
-                total += enumerator.Current * weight;
+                float weight = _filterFuncs[_filter]((float)i / _data.Count - 1.0f);
+                totalX += enumerator.Current.X * weight;
+                totalY += enumerator.Current.X * weight;
                 max += weight;
                 i++;
             }
 
-            return _Mix(args[0], total / max, args[2]);
+            return _Mix(args[0], new Vector2(totalX, totalY) / max, args[2]);
         }
 
         protected override void _UpdateNodeArguments()

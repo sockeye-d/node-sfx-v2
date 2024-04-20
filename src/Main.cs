@@ -73,8 +73,7 @@ public partial class Main : Control
         for (int i = 0; i < framesAvailable; i++)
         {
             SfxNode.Time = _time;
-            double val = (_nodeTree?.Execute()).GetValueOrDefault();
-            _audioPlayback.PushFrame(new Vector2((float)val, (float)val));
+            _audioPlayback.PushFrame((_nodeTree?.Execute()).GetValueOrDefault());
             _time += invSampleRate;
         }
     }
@@ -150,6 +149,8 @@ public partial class Main : Control
             "Convolutional low pass" => new ConvolutionalLowPassNode(node, node.Name),
             "Loop" => new LoopNode(node, node.Name),
             "Loop input" => new LoopInputNode(node, node.Name),
+            "Combine" => new CombineNode(node, node.Name),
+            "Separate" => new SeparateNode(node, node.Name),
             _ => null,
         };
     }

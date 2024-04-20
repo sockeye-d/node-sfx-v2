@@ -11,7 +11,7 @@ namespace NodeSfx.Nodes
 
         }
 
-        protected override double Calculate(double[] args)
+        protected override Vector2 Calculate(Vector2[] args)
         {
             return args[0];
         }

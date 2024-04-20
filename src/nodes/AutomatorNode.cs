@@ -12,26 +12,26 @@ namespace NodeSfx.Nodes
             _points = (Vector2[])Source.Get("normalized_points");
         }
 
-        protected override double Calculate(double[] args)
+        protected override Vector2 Calculate(Vector2[] args)
         {
-            double time = args[0];
-            double fromMin = args[1];
-            double fromMax = args[2];
-            double toMin = args[3];
-            double toMax = args[4];
-            if (Input.IsKeyPressed(Key.S))
-            {
-                GD.Print(_points.Stringify());
-            }
-            return _Remap(_GetValue(_Remap(time, fromMin, fromMax, 0.0, 1.0)), 0.0, 1.0, toMin, toMax);
+            Vector2 time = args[0];
+            Vector2 fromMin = args[1];
+            Vector2 fromMax = args[2];
+            Vector2 toMin = args[3];
+            Vector2 toMax = args[4];
+
+            float x = _Remap(_GetValue(_Remap(time.X, fromMin.X, fromMax.X, 0.0f, 1.0f)), 0.0f, 1.0f, toMin.X, toMax.X);
+            float y = _Remap(_GetValue(_Remap(time.Y, fromMin.Y, fromMax.Y, 0.0f, 1.0f)), 0.0f, 1.0f, toMin.Y, toMax.Y);
+
+            return new Vector2(x, y);
         }
 
         protected override void _UpdateNodeArguments()
         {
-            _points = (Vector2[])Source.Get("normalized_points");
+            _points = Source.Get("normalized_points").AsVector2Array();
         }
 
-        private double _GetValue(double x)
+        private float _GetValue(float x)
         {
             if (_points.Length == 1)
             {

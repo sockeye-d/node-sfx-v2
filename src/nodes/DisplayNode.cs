@@ -12,7 +12,7 @@ namespace NodeSfx.Nodes
             _label = source.GetNode<Label>("Panel/MarginContainer/Label");
         }
 
-        protected override double Calculate(double[] args)
+        protected override Vector2 Calculate(Vector2[] args)
         {
             _label.Text = args[0].ToString($"F{args[1]}");
             return args[0];

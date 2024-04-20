@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Vector2 = Godot.Vector2;
 
 namespace NodeSfx.Nodes
 {
@@ -25,7 +26,7 @@ namespace NodeSfx.Nodes
         public static double InvSampleRate { get; private set; }
         public static double Time;
 
-        public double[] Arguments;
+        public Vector2[] Arguments;
 
         /// <summary>
         /// Maps port numbers to nodes
@@ -39,19 +40,34 @@ namespace NodeSfx.Nodes
         /// </summary>
         /// <param name="args">The arguments passed in either by the user or by the node connected</param>
         /// <returns></returns>
-        protected abstract double Calculate(double[] args);
+        protected abstract Vector2 Calculate(Vector2[] args);
 
         protected virtual void _UpdateNodeArguments()
         {
             return;
         }
 
-        protected static double _Remap(double x, double fromMin, double fromMax, double toMin, double toMax)
+        protected static Vector2 _Remap(Vector2 x, Vector2 fromMin, Vector2 fromMax, Vector2 toMin, Vector2 toMax)
         {
             return (x - fromMin) / (fromMax - fromMin) * (toMax - toMin) + toMin;
         }
 
+        protected static float _Remap(float x, float fromMin, float fromMax, float toMin, float toMax)
+        {
+            return (x - fromMin) / (fromMax - fromMin) * (toMax - toMin) + toMin;
+        }
+
+        protected static Vector2 _Mix(Vector2 a, Vector2 b, Vector2 fac)
+        {
+            return a + (b - a) * fac;
+        }
+
         protected static double _Mix(double a, double b, double fac)
+        {
+            return a + (b - a) * fac;
+        }
+
+        protected static float _Mix(float a, float b, float fac)
         {
             return a + (b - a) * fac;
         }
@@ -68,9 +84,9 @@ namespace NodeSfx.Nodes
             ConnectedNodes.Add(port, node);
         }
 
-        public double Execute()
+        public Vector2 Execute()
         {
-            double[] computedArgs = new double[Arguments.Length];
+            Vector2[] computedArgs = new Vector2[Arguments.Length];
             for (int i = 0; i < Arguments.Length; i++)
             {
                 // If a node is connected, then calculate its value to pass into this node
@@ -106,18 +122,18 @@ namespace NodeSfx.Nodes
             {
                 node.Dispose();
             }
-            GC.SuppressFinalize(this);
         }
 
         public void UpdateNodeArguments()
         {
-            List<double> args = new();
+            List<Vector2> args = new();
 
             foreach (Godot.Node child in Source.GetChildren())
             {
                 if (child.HasMeta("is_slider_combo"))
                 {
-                    args.Add(child.Get("slider_value").AsDouble());
+                    float arg = (float)child.Get("slider_value");
+                    args.Add(new Vector2(arg, arg));
                 }
             }
 
@@ -129,6 +145,11 @@ namespace NodeSfx.Nodes
             }
 
             _UpdateNodeArguments();
+        }
+
+        public T GetNode<T>(string path) where T : Godot.Node
+        {
+            return Source.GetNode<T>(path);
         }
     }
 }

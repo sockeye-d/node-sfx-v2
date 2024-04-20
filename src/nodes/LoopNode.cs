@@ -8,8 +8,8 @@ namespace NodeSfx.Nodes
 {
     public class LoopNode : Node
     {
-        private readonly Dictionary<string, double> _inputs = new();
-        private readonly Dictionary<string, double> _defaultInputs = new();
+        private readonly Dictionary<string, Vector2> _inputs = new();
+        private readonly Dictionary<string, Vector2> _defaultInputs = new();
         private readonly Dictionary<int, string> _inputNames = new();
         private int _loopIterations = 0;
         public LoopNode(GraphNode source, string name) : base(source, name)
@@ -17,7 +17,7 @@ namespace NodeSfx.Nodes
 
         }
 
-        protected override double Calculate(double[] args)
+        protected override Vector2 Calculate(Vector2[] args)
         {
             _ResetInputs();
             for (int i = 0; i < _loopIterations; i++)
@@ -41,7 +41,7 @@ namespace NodeSfx.Nodes
                 {
                     LineEdit lineEdit = node.GetNode<LineEdit>("HBoxContainer/InputName");
                     _inputNames[node.GetIndex() - nonInputChildren] = lineEdit.Text;
-                    _defaultInputs[lineEdit.Text] = node.GetNode("DefaultValueInput").Get("slider_value").AsDouble();
+                    _defaultInputs[lineEdit.Text] = node.GetNode("DefaultValueInput").Get("slider_value").AsVector2();
                 }
                 else
                 {
@@ -81,23 +81,12 @@ namespace NodeSfx.Nodes
             }
         }
 
-        private static string _DictToString<TKey, TValue>(Dictionary<TKey, TValue> dict)
-        {
-            StringBuilder sb = new("{");
-            for (int i = 0; i < dict.Count; i++)
-            {
-                sb.Append($"{dict.Keys.ToArray()[i]} = {dict[dict.Keys.ToArray()[i]]}{(i == dict.Count - 1 ? "" : ",")}");
-            }
-            sb.Append('}');
-            return sb.ToString();
-        }
-
         /// <summary>
-        /// Propogates the inputs to all the connected LoopInput nodes
+        /// Propagates the inputs to all the connected LoopInput nodes
         /// </summary>
         /// <param name="parent">The node to start at. Normally a reference to the self></param>
         /// <param name="inputs">The inputs to pass along</param>
-        private static void _SetInputNodes(Node parent, Dictionary<string, double> inputs)
+        private static void _SetInputNodes(Node parent, Dictionary<string, Vector2> inputs)
         {
             foreach (var node in parent.ConnectedNodes.Values)
             {

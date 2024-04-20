@@ -6,21 +6,18 @@ namespace NodeSfx.Nodes
 {
     public class ExponentialLowPassNode : Node
     {
-        private double _value;
+        private float _valueX;
+        private float _valueY;
         public ExponentialLowPassNode(GraphNode source, string name) : base(source, name)
         {
 
         }
 
-        protected override double Calculate(double[] args)
+        protected override Vector2 Calculate(Vector2[] args)
         {
-            _value += (args[0] - _value) * (1.0 - Math.Pow(args[1], 0.01));
-            return _Mix(args[0], _value, args[2]);
-        }
-        
-        private static double _ExpDamp(double source, double target, double smoothing, double dt)
-        {
-            return _Mix(target, source, Math.Pow(smoothing, dt));
+            _valueX += (args[0].X - _valueX) * (1.0f - MathF.Pow(args[1].X, 0.01f));
+            _valueY += (args[0].Y - _valueY) * (1.0f - MathF.Pow(args[1].Y, 0.01f));
+            return _Mix(args[0], new Vector2(_valueX, _valueY), args[2]);
         }
     }
 }

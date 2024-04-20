@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -21,27 +22,29 @@ namespace NodeSfx.Nodes
 
         private double _time;
 
-        private Dictionary<OscillatorType, Func<double, double, double, double>> _functionMap = new()
+        private readonly ReadOnlyDictionary<OscillatorType, Func<double, double>> _functionMap = new(new Dictionary<OscillatorType, Func<double, double>>
         {
-            [OscillatorType.SINE] = (time, amp, phase) => Math.Sin(Math.Tau * (time + phase)) * amp,
-            [OscillatorType.SQUARE] = (time, amp, phase) => (2.0 * Math.Floor(2.0 * ((time + phase) % 1.0)) - 1.0) * amp,
-            [OscillatorType.TRIANGLE] = (time, amp, phase) => (2.0 * Math.Abs(2.0 * ((time + phase) % 1.0) - 1.0) - 1.0) * amp,
-            [OscillatorType.SAWTOOTH] = (time, amp, phase) => (2.0 * ((time + phase) % 1.0) - 1.0) * amp,
-            [OscillatorType.NOISE] = (time, amp, phase) => _HashTime(time * 10000.0) * amp,
-            [OscillatorType.SMOOTH_NOISE] = (time, amp, phase) =>_SmoothNoise(time + phase) * amp,
-        };
+            [OscillatorType.SINE] = (time) => Math.Sin(Math.Tau * time),
+            [OscillatorType.SQUARE] = (time) => 2.0 * Math.Floor(2.0 * (time % 1.0)) - 1.0,
+            [OscillatorType.TRIANGLE] = (time) => 2.0 * Math.Abs(2.0 * (time % 1.0) - 1.0) - 1.0,
+            [OscillatorType.SAWTOOTH] = (time) => 2.0 * (time % 1.0) - 1.0,
+            [OscillatorType.NOISE] = (time) => _HashTime(time * 10000.0),
+            [OscillatorType.SMOOTH_NOISE] = (time) => _SmoothNoise(time),
+        });
 
         public OscillatorType Type;
 
         public OscillatorNode(GraphNode source, string name) : base(source, name)
         {
-            
+
         }
 
-        protected override double Calculate(double[] args)
+        protected override Vector2 Calculate(Vector2[] args)
         {
-            _time += InvSampleRate * args[0];
-            return _functionMap[Type](_time, args[1], args[2]);
+            _time += InvSampleRate * args[0].X;
+            float valX = (float)_functionMap[Type](_time + args[2].X) * args[1].X;
+            float valY = (float)_functionMap[Type](_time + args[3].X) * args[1].X;
+            return new Vector2(valX, valY);
         }
 
         protected override void _UpdateNodeArguments()
@@ -66,7 +69,7 @@ namespace NodeSfx.Nodes
         {
             double a = _HashTime(Math.Floor(x));
             double b = _HashTime(Math.Floor(x) + 1.0);
-            double f = _Smoothstep(x % 1.0);
+            double f = _Smoothstep(x % 1.0f);
             return _Mix(a, b, f);
         }
     }
