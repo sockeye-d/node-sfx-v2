@@ -28,7 +28,7 @@ public partial class Main : Control
             ToNode = (StringName)connection["to_node"];
             ToPort = (int)connection["to_port"];
         }
-
+        
         public override string ToString()
         {
             return $"From port {FromPort} of {FromNode} to port {ToPort} of {ToNode}";

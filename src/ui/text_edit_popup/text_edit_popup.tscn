@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://c4umntkoaq6qw"]
 
-[ext_resource type="Script" path="res://src/ui/text_edit_popup/text_edit_popup.gd" id="1_ltphf"]
+[ext_resource type="Script" uid="uid://casi7pnc1fmch" path="res://src/ui/text_edit_popup/text_edit_popup.gd" id="1_ltphf"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_uslob"]
 action = &"cancel"

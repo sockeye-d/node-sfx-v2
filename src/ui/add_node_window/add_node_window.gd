@@ -33,7 +33,7 @@ func _ready() -> void:
 	item_selected_or_canceled.connect(
 			func(item):
 				hide()
-				)
+	)
 	#tree.get_root().set_collapsed_recursive.call_deferred(false)
 
 

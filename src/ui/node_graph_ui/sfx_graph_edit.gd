@@ -36,12 +36,8 @@ var nodes: Dictionary
 
 
 var undo_ptr: int = 0
-var undo_stack: Array[NodeTree]
-
-
-var connections: Array[Dictionary]:
-	get:
-		return get_connection_list()
+## array of the data returned by [member NodeTree.serialize]
+var undo_stack: Array[Variant]
 
 
 func _ready() -> void:
@@ -53,10 +49,8 @@ func _ready() -> void:
 	volume_slider.slider_value_changed.connect(_change_volume)
 	rename_node_button.pressed.connect(_on_rename_node_button_pressed)
 	ui_toggle_button.state_changed.connect(
-			func(state): ui_layer.scale = Vector2.ONE if state else Vector2.ZERO
-			)
-	
-	_load_nodes()
+		func(state): ui_layer.scale = Vector2.ONE if state else Vector2.ZERO
+	)
 	
 
 
@@ -152,8 +146,16 @@ func get_selected_nodes() -> Array[GraphNode]:
 	return nodes
 
 
+func get_graphnodes() -> Array[SFXNode]:
+	var nodes: Array[SFXNode] = []
+	for child in get_children():
+		if child is SFXNode:
+			nodes.append(child)
+	return nodes
+
+
 func push_undo_frame() -> void:
-	undo_stack.push_back(NodeTree.new(self))
+	undo_stack.push_back(NodeTree.serialize(self))
 	#_print_nodes()
 
 
@@ -161,7 +163,7 @@ func pop_undo_frame() -> void:
 	if undo_stack.size() > 0:
 		print("undo frame popped")
 		_print_nodes()
-		undo_stack.pop_back().load_tree(self)
+		NodeTree.deserialize(self, undo_stack.pop_back())
 		_print_nodes()
 		connection_changed.emit()
 
@@ -177,15 +179,30 @@ func add_node(child: Node, push_undo_frame: bool = true) -> void:
 	if child is SFXNode:
 		child.changed.connect(func(): push_undo_frame())
 		child.connection_requested.connect(
-				func(from_node, from_port, to_node, to_port):
-					connect_node(from_node, from_port, to_node, to_port)
-					)
-		child.disconnect_requested.connect(func(port): _on_node_disconnect_request(port, child))
+			func(from_node: StringName, from_port: int, to_node: StringName, to_port: int):
+				connect_node(from_node, from_port, to_node, to_port)
+		)
+		child.disconnect_requested.connect(func(port: int): _on_node_disconnect_request(port, child))
 		child.graph_edit = self
+		child.resize_request.connect(
+			func(new_size: Vector2i):
+				#push_undo_frame()
+				#if child is SFXNode:
+				if child.resize_mode & SFXNode.RESIZE_ALLOW_X:
+					child.size.x = new_size.x
+				if child.resize_mode & SFXNode.RESIZE_ALLOW_Y:
+					child.size.y = new_size.y
+				#else:
+					#child.size = new_minsize
+		)
+		child.resize_end.connect(
+			func(new_size: Vector2i) -> void:
+				push_undo_frame()
+		)
 	add_child(child)
 
 
-func connect_node(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> Error:
+func connect_node(from_node: StringName, from_port: int, to_node: StringName, to_port: int, keep_alive := false) -> Error:
 	var node: GraphNode = get_node(NodePath(to_node))
 	var input = node.get_child(node.get_input_port_slot(to_port))
 	if input is SliderCombo:
@@ -201,26 +218,13 @@ func disconnect_node(from_node: StringName, from_port: int, to_node: StringName,
 	super.disconnect_node(from_node, from_port, to_node, to_port)
 
 
-func _load_nodes(folder: String = nodes_folder) -> void:
-	folder = folder.trim_suffix("/")
-	for child_folder in DirAccess.get_directories_at(folder):
-		_load_nodes(folder + "/" + child_folder)
-	for file in DirAccess.get_files_at(folder):
-		if file.get_extension() == "tscn":
-			var node_name = file.get_basename().replace("_", " ")
-			if node_name.trim_suffix(" node") == node_name:
-				continue
-			var full_path = folder + "/" + file
-			nodes[node_name.trim_suffix(" node")] = load(full_path)
-
-
-func _add_node(new_node_offset: Vector2 = (scroll_offset + size / 2.0) / zoom) -> GraphNode:
+func _add_node(new_node_offset: Vector2 = (scroll_offset + size / 2.0) / zoom) -> SFXNode:
 	add_node_window.popup()
 	var selected: String = await add_node_window.item_selected_or_canceled
 	
 	if selected == "":
 		return null
-	var node: GraphNode = nodes[selected.to_lower()].instantiate()
+	var node: SFXNode = SFXNode.create_node(selected)
 	node.position_offset = new_node_offset
 	
 	add_node(node, true)

@@ -1,15 +1,15 @@
 [gd_scene load_steps=27 format=3 uid="uid://dpkk5woh4logp"]
 
-[ext_resource type="Script" path="res://src/ui/node_graph_ui/sfx_graph_edit.gd" id="1_xycfd"]
+[ext_resource type="Script" uid="uid://b2joegfw58f7j" path="res://src/ui/node_graph_ui/sfx_graph_edit.gd" id="1_xycfd"]
 [ext_resource type="PackedScene" uid="uid://b2a46kobve2bc" path="res://src/ui/node_graph_ui/nodes/output_node.tscn" id="2_e504x"]
 [ext_resource type="PackedScene" uid="uid://h2uba1em2toh" path="res://src/ui/add_node_window/add_node_window.tscn" id="2_k7ga3"]
-[ext_resource type="Script" path="res://src/ui/slider_combo/slider_combo.gd" id="4_i341j"]
+[ext_resource type="Script" uid="uid://bbx5728n2qxfj" path="res://src/ui/slider_combo/slider_combo.gd" id="4_i341j"]
 [ext_resource type="PackedScene" uid="uid://c4umntkoaq6qw" path="res://src/ui/text_edit_popup/text_edit_popup.tscn" id="4_n84ql"]
-[ext_resource type="Script" path="res://src/ui/node_graph_ui/texture_toggle_button.gd" id="6_6dob5"]
+[ext_resource type="Script" uid="uid://dlo536ylbiib1" path="res://src/ui/node_graph_ui/texture_toggle_button.gd" id="6_6dob5"]
 [ext_resource type="Texture2D" uid="uid://pod71mt5n80g" path="res://src/assets/icons/rewind.png" id="6_70ih8"]
 [ext_resource type="Texture2D" uid="uid://uk5y2jutndfs" path="res://src/assets/icons/play.png" id="8_472sp"]
 [ext_resource type="Texture2D" uid="uid://bwq1356tmf1io" path="res://src/assets/icons/stop.png" id="8_bvw1v"]
-[ext_resource type="Script" path="res://src/ui/node_graph_ui/square_button.gd" id="9_ii1iv"]
+[ext_resource type="Script" uid="uid://bh6ilpe7qoru3" path="res://src/ui/node_graph_ui/square_button.gd" id="9_ii1iv"]
 [ext_resource type="Texture2D" uid="uid://cioqhu3y5jekc" path="res://src/assets/icons/pause.png" id="10_y2sef"]
 [ext_resource type="Texture2D" uid="uid://dwnv3vbpsj47h" path="res://src/assets/icons/hide_ui.png" id="11_hf4ix"]
 [ext_resource type="Texture2D" uid="uid://josmkakpx5e8" path="res://src/assets/icons/show_ui.png" id="13_ew5av"]
@@ -130,6 +130,7 @@ process_mode = 0
 process_priority = 0
 process_physics_priority = 0
 process_thread_group = 0
+physics_interpolation_mode = 2
 auto_translate_mode = 1
 editor_description = ""
 visible = true
@@ -148,15 +149,15 @@ texture_repeat = 0
 material = null
 use_parent_material = false
 clip_contents = false
-custom_minimum_size = Vector2(115, 45)
+custom_minimum_size = Vector2(115, 37)
 layout_direction = 0
 layout_mode = 2
 size_flags_horizontal = 1
 size_flags_vertical = 1
 size_flags_stretch_ratio = 1.0
 localize_numeral_system = true
-auto_translate = true
 tooltip_text = ""
+tooltip_auto_translate_mode = 0
 focus_neighbor_left = NodePath("")
 focus_neighbor_top = NodePath("")
 focus_neighbor_right = NodePath("")
@@ -209,7 +210,7 @@ text = "Rename node"
 
 [node name="RewindButton" type="Button" parent="MenuHBoxControls"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(44, 0)
+custom_minimum_size = Vector2(45, 0)
 layout_mode = 2
 disabled = true
 shortcut = SubResource("Shortcut_xqpfn")
@@ -220,7 +221,7 @@ script = ExtResource("9_ii1iv")
 
 [node name="PlayPauseButton" type="Button" parent="MenuHBoxControls"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(44, 0)
+custom_minimum_size = Vector2(45, 0)
 layout_mode = 2
 shortcut = SubResource("Shortcut_dgr7n")
 icon = ExtResource("8_472sp")
@@ -233,7 +234,7 @@ false_icon = ExtResource("8_472sp")
 [node name="StopButton" type="Button" parent="MenuHBoxControls"]
 unique_name_in_owner = true
 auto_translate_mode = 1
-custom_minimum_size = Vector2(44, 0)
+custom_minimum_size = Vector2(45, 0)
 layout_mode = 2
 disabled = true
 shortcut = SubResource("Shortcut_8bhqi")

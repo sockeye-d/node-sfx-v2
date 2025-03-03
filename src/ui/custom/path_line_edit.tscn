@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://3bysvnaxbmrn"]
+
+[ext_resource type="Script" path="res://src/ui/custom/path_line_edit.gd" id="1_06msn"]
+
+[node name="PathLineEdit" type="HBoxContainer"]
+texture_filter = 2
+offset_right = 80.0
+offset_bottom = 29.0
+script = ExtResource("1_06msn")

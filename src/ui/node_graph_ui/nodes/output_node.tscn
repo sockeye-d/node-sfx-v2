@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://b2a46kobve2bc"]
 
-[ext_resource type="Script" path="res://src/ui/slider_combo/slider_combo.gd" id="1_2istb"]
-[ext_resource type="Script" path="res://src/ui/node_graph_ui/nodes/sfx_node.gd" id="1_i5s1m"]
+[ext_resource type="Script" uid="uid://bbx5728n2qxfj" path="res://src/ui/slider_combo/slider_combo.gd" id="1_2istb"]
+[ext_resource type="Script" uid="uid://dy8pr32q24jrk" path="res://src/ui/node_graph_ui/nodes/sfx_node.gd" id="1_i5s1m"]
 
 [node name="OutputNode" type="GraphNode"]
 custom_minimum_size = Vector2(200, 0)
@@ -25,6 +25,7 @@ process_mode = 0
 process_priority = 0
 process_physics_priority = 0
 process_thread_group = 0
+physics_interpolation_mode = 2
 auto_translate_mode = 1
 editor_description = ""
 visible = true
@@ -50,8 +51,8 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 size_flags_stretch_ratio = 1.0
 localize_numeral_system = true
-auto_translate = true
 tooltip_text = ""
+tooltip_auto_translate_mode = 0
 focus_neighbor_left = NodePath("")
 focus_neighbor_top = NodePath("")
 focus_neighbor_right = NodePath("")
@@ -75,4 +76,6 @@ allow_greater = false
 allow_lesser = false
 script = ExtResource("1_2istb")
 prefix = "Value: "
+editable = false
 slider_value = 0.5
+metadata/is_slider_combo = true

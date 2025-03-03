@@ -95,7 +95,7 @@ children = Array[ExtResource("2_ymasl")]([SubResource("Resource_ssmdf"), SubReso
 
 [sub_resource type="Resource" id="Resource_k2u25"]
 script = ExtResource("2_ymasl")
-name = "Audio"
+name = "Audio file"
 description = "Imports an audio file"
 children = Array[ExtResource("2_ymasl")]([])
 

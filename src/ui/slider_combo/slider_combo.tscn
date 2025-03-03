@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://l43j3l1xdsre"]
 
-[ext_resource type="Script" path="res://src/ui/slider_combo/slider_combo.gd" id="1_epr2m"]
+[ext_resource type="Script" uid="uid://bbx5728n2qxfj" path="res://src/ui/slider_combo/slider_combo.gd" id="1_epr2m"]
 
 [node name="SliderCombo" type="Range"]
 _import_path = NodePath("")
@@ -9,6 +9,7 @@ process_mode = 0
 process_priority = 0
 process_physics_priority = 0
 process_thread_group = 0
+physics_interpolation_mode = 2
 auto_translate_mode = 1
 editor_description = ""
 visible = true
@@ -27,20 +28,20 @@ texture_repeat = 0
 material = null
 use_parent_material = false
 clip_contents = false
-custom_minimum_size = Vector2(427, 45)
+custom_minimum_size = Vector2(0, 45)
 layout_direction = 0
 layout_mode = 3
-anchors_preset = 15
+anchors_preset = 0
 anchor_left = 0.0
 anchor_top = 0.0
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_right = 0.0
+anchor_bottom = 0.0
 offset_left = 0.0
 offset_top = 0.0
-offset_right = -725.0
-offset_bottom = -609.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_right = 158.0
+offset_bottom = 45.0
+grow_horizontal = 1
+grow_vertical = 1
 rotation = 0.0
 scale = Vector2(1, 1)
 pivot_offset = Vector2(0, 0)
@@ -48,8 +49,8 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 size_flags_stretch_ratio = 1.0
 localize_numeral_system = true
-auto_translate = true
 tooltip_text = ""
+tooltip_auto_translate_mode = 0
 focus_neighbor_left = NodePath("")
 focus_neighbor_top = NodePath("")
 focus_neighbor_right = NodePath("")
@@ -64,13 +65,13 @@ theme = null
 theme_type_variation = &""
 min_value = 0.0
 max_value = 100.0
-step = 0.1
+step = 0.0001
 page = 0.0
-value = 9.4
+value = 16.694
 exp_edit = false
 rounded = false
 allow_greater = false
 allow_lesser = false
 script = ExtResource("1_epr2m")
 prefix = "A prefix: "
-slider_value = 9.4
+slider_value = 16.694
